@@ -1,6 +1,6 @@
 # Welcome to BigData.Spark
 
-It's about various BigData problems solved with Spark and NoSQL technologies.
+It's about various BigData problems solved with Spark and, in future, NoSQL technologies.
 
 ## Word count and ranking of multiple data streams
 The first one of the most recurrent BigData problems: the word count and ranking.
