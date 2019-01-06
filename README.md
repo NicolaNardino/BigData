@@ -13,7 +13,7 @@ The beauty of this is that the SPA can continuously receive and apply transforma
 Unfortunately, Spark 2.4 doesn't fully support Java 10-11, for instance, in collect operations, so I'd to use Java 8 in the SPA. While I could use Java 11 in the TCP data streaming servers.
 
 ## Development environment and tools
-Ubuntu.
-Eclipse 12-2018.
-Spark 2.4.
-Java 8, 11.
+- Ubuntu.
+- Eclipse 12-2018.
+- Spark 2.4.
+- Java 8, 11.
