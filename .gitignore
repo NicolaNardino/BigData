@@ -1,0 +1,10 @@
+.metadata/
+RemoteSystemsTempFiles/
+.recommenders/
+.metadata/
+.plugins/
+SparkStreaming/target
+SparkStreaming/log
+TCPDataStreaming/target
+TCPDataStreaming/log
+Utility/target
