@@ -75,14 +75,14 @@ public final class DataStreamTCPServer implements Runnable {
 	 * It stops after a configurable processing time.
 	 * */
 	public static void main(final String[] args) throws FileNotFoundException, IOException, NumberFormatException, InterruptedException {
-		final var execService = Executors.newFixedThreadPool(2);
 		final var properties = Utility.getApplicationProperties("server.properties");
 		final var messageSendDelayMilliSeconds = Integer.valueOf(properties.getProperty("messageSendDelayMilliSeconds"));
-		final var servers = Arrays.stream(properties.getProperty("port").split(",")).
+		final var localhostPorts = Arrays.stream(properties.getProperty("port").split(",")).
 		map(port -> new DataStreamTCPServer(Integer.valueOf(port), messageSendDelayMilliSeconds)).collect(Collectors.toList());
-		servers.stream().forEach(execService::execute);
+		final var execService = Executors.newFixedThreadPool(localhostPorts.size());
+		localhostPorts.stream().forEach(execService::execute);
 		Utility.sleep(TimeUnit.SECONDS, Integer.valueOf(properties.getProperty("upTimeWindowSeconds")));
-		servers.stream().forEach(DataStreamTCPServer::stop);
+		localhostPorts.stream().forEach(DataStreamTCPServer::stop);
 		Utility.shutdownExecutorService(execService, 1, TimeUnit.SECONDS);
 	}
 	
