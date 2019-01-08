@@ -15,7 +15,6 @@ import com.projects.bigdata.utility.trade.Exchange;
 import com.projects.bigdata.utility.trade.Trade;
 
 /**
- * 
  * It sends over a socket randomly <code>Trade</code> instances in JSON format, like the following:
  * 		{"symbol":"ACN","price":475.5955733771751283711637370288372039794921875,"direction":"Sell","quantity":44,"exchange":"FTSE"}
  * 		{"symbol":"AGN","price":378.637626500618580394075252115726470947265625,"direction":"Buy","quantity":65,"exchange":"FTSE"}
@@ -36,10 +35,8 @@ public final class TradeStreamingTCPServer extends AbstractDataStreamingTCPServe
 	 * */
 	public String buildLine() {
 		try {
-			final var trade = new Trade(Utility.Symbols.get(current().nextInt(Utility.Symbols.size())), getRandomEnumValue(Direction.class), current().nextInt(1, 100), 
-					new BigDecimal(current().nextDouble(1.0, 999.0)), getRandomEnumValue(Exchange.class));
-			logger.info("Trade: " + trade);
-			return mapper.writeValueAsString(trade).toString();
+			return mapper.writeValueAsString(new Trade(Utility.Symbols.get(current().nextInt(Utility.Symbols.size())), getRandomEnumValue(Direction.class), current().nextInt(1, 100), 
+					new BigDecimal(current().nextDouble(1.0, 999.0)), getRandomEnumValue(Exchange.class))).toString();
 		} catch (final JsonProcessingException e) {
 			logger.warn("Unable to build JSON string.", e);
 			return "";
