@@ -17,15 +17,15 @@ import com.projects.bigdata.utility.Utility;
  * 
  * The current use case consists of sending data to two ports, i.e., it opens instantiates two ServerSockets, although it could open and send data to an indefinite number of ports.  
  * */
-public abstract class AbstractDataStreamTCPServer implements Runnable {
-	private static final Logger logger = LoggerFactory.getLogger(AbstractDataStreamTCPServer.class);
+public abstract class AbstractDataStreamingTCPServer implements Runnable {
+	private static final Logger logger = LoggerFactory.getLogger(AbstractDataStreamingTCPServer.class);
 	
 	private final ServerSocket serverSocket;
 	private final int messageSendDelayMilliSeconds;
 	private final int port; 
 	private volatile boolean isStopped;
 	
-	public AbstractDataStreamTCPServer(final int port, final int messageSendDelayMilliSeconds) {
+	public AbstractDataStreamingTCPServer(final int port, final int messageSendDelayMilliSeconds) {
 		this.port = port;
 		this.messageSendDelayMilliSeconds = messageSendDelayMilliSeconds;
 		try {

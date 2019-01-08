@@ -22,7 +22,7 @@ import com.projects.bigdata.utility.trade.Trade;
  * 		{"symbol":"MSFT","price":486.895279745447396635427139699459075927734375,"direction":"Buy","quantity":89,"exchange":"NASDAQ"}		
  * 
  * */
-public final class TradeStreamingTCPServer extends AbstractDataStreamTCPServer {
+public final class TradeStreamingTCPServer extends AbstractDataStreamingTCPServer {
 	private static final Logger logger = LoggerFactory.getLogger(TradeStreamingTCPServer.class);
 	
 	private final ObjectMapper mapper;

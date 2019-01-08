@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 import com.projects.bigdata.utility.Utility;
 
-public class DataStreamTCPServersRunner {
+public class DataStreamingTCPServersRunner {
 
 	/**
 	 * It starts two TCP Servers, waits for the Spark Streaming application to connect and then sends data.
@@ -23,7 +23,7 @@ public class DataStreamTCPServersRunner {
 		final var execService = Executors.newFixedThreadPool(dataStreamServers.size());
 		dataStreamServers.stream().forEach(execService::execute);
 		Utility.sleep(TimeUnit.SECONDS, Integer.valueOf(properties.getProperty("upTimeWindowSeconds")));
-		dataStreamServers.stream().forEach(AbstractDataStreamTCPServer::stop);
+		dataStreamServers.stream().forEach(AbstractDataStreamingTCPServer::stop);
 		Utility.shutdownExecutorService(execService, 1, TimeUnit.SECONDS);
 	}
 

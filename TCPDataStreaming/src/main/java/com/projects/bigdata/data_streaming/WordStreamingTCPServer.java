@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
  * It sends over a socket randomly generated phrases, like the following:
  * 		word32 word783 word54 ... 
  * */
-public final class WordStreamingTCPServer extends AbstractDataStreamTCPServer {
+public final class WordStreamingTCPServer extends AbstractDataStreamingTCPServer {
 	
 	public WordStreamingTCPServer(final int port, final int messageSendDelayMilliSeconds) {
 		super(port, messageSendDelayMilliSeconds);
