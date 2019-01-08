@@ -64,7 +64,7 @@ public final class StreamingWordsCount {
     	final JavaReceiverInputDStream<String> inputStream2 = streamingContext.socketTextStream(dataStreamHost2, dataStreamPort2);
     	final JavaPairDStream<String, Integer> wordCounts = wordCountsFromStream(inputStream1).fullOuterJoin(wordCountsFromStream(inputStream2)).
     			mapToPair(f -> new Tuple2<String, Integer>(f._1, f._2._1.or(0) + f._2._2.or(0)));
-    	//wordCounts.print();
+    	//wordCounts.print();W
     	final JavaPairDStream<String, Integer> aggregateCount = wordCounts.updateStateByKey(
                 (newValues, currentValue) -> {
                 	if (newValues == null || newValues.isEmpty())
