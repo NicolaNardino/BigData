@@ -4,6 +4,7 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,24 +16,26 @@ import com.projects.bigdata.utility.Utility;
  * It's not meant to be a fully fledged TCP server, i.e., with a multithreaded request manager, because its only purpose is to send data to a Spark Streaming application, 
  * which is its only client.
  * 
- * The current use case consists of sending data to two ports, i.e., it opens instantiates two ServerSockets, although it could open and send data to an indefinite number of ports.  
+ * The current use case consists of sending data to two ports. It instantiates two ServerSockets, although it could open and send data to an indefinite number of ports.  
  * */
-public abstract class AbstractDataStreamingTCPServer implements Runnable {
-	private static final Logger logger = LoggerFactory.getLogger(AbstractDataStreamingTCPServer.class);
+public final class DataStreamingTCPServer implements Runnable {
+	private static final Logger logger = LoggerFactory.getLogger(DataStreamingTCPServer.class);
 	
 	private final ServerSocket serverSocket;
 	private final int messageSendDelayMilliSeconds;
 	private final int port; 
+	final Supplier<String>  streamingLineBuilder;
 	private volatile boolean isStopped;
 	
-	public AbstractDataStreamingTCPServer(final int port, final int messageSendDelayMilliSeconds) {
+	public DataStreamingTCPServer(final Supplier<String> streamingLineBuilder, final int port, final int messageSendDelayMilliSeconds) {
+		this.streamingLineBuilder = streamingLineBuilder;
 		this.port = port;
 		this.messageSendDelayMilliSeconds = messageSendDelayMilliSeconds;
 		try {
 			serverSocket = new ServerSocket(port);	
 		}
 		catch(final Exception e) {
-			throw new RuntimeException("Unable to instantiate localhost server@"+port);
+			throw new RuntimeException("Unable to instantiate localhost server@"+port, e);
 		}
 		logger.info("Server started, localhost@"+port);
 	}
@@ -44,7 +47,7 @@ public abstract class AbstractDataStreamingTCPServer implements Runnable {
 			 final PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);) {
 			logger.info("Client request received.");
 			while (!isStopped) {
-				final String line = buildLine();
+				final String line = streamingLineBuilder.get();
 				logger.info("Sending line: "+line);
 				writer.println(line);
 				Utility.sleep(TimeUnit.MILLISECONDS, messageSendDelayMilliSeconds);
@@ -65,7 +68,4 @@ public abstract class AbstractDataStreamingTCPServer implements Runnable {
 		}
 		logger.info("Server stopped, localhost@"+port);
 	}
-	
-	protected abstract String buildLine();
-	
 }
