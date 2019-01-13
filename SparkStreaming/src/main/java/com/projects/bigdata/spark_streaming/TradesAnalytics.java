@@ -12,7 +12,6 @@ import org.apache.spark.streaming.StateSpec;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.api.java.JavaMapWithStateDStream;
 import org.apache.spark.streaming.api.java.JavaPairDStream;
-import org.apache.spark.streaming.api.java.JavaReceiverInputDStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,16 +36,15 @@ public final class TradesAnalytics extends AbstractStreaming {
     }
     
     public void process() throws InterruptedException {    	
-    	final JavaReceiverInputDStream<String> inputStream1 = streamingContext.socketTextStream(dataStreamHost1, dataStreamPort1);
-    	final JavaReceiverInputDStream<String> inputStream2 = streamingContext.socketTextStream(dataStreamHost2, dataStreamPort2);
-    	final JavaDStream<Trade> union = inputStream1.map(TradesAnalytics::convertJsonToTrade).union(inputStream2.map(TradesAnalytics::convertJsonToTrade));
-    	final JavaPairDStream<String, Trade> symbolToTrade = union.mapToPair(t -> new Tuple2<String, Trade>(t.getSymbol(), t));
-    	final JavaMapWithStateDStream<String, Trade, List<Trade>, Tuple2<String, Double>> mapWithState = symbolToTrade.mapWithState(StateSpec.function(new Aggregation()));
+    	final JavaDStream<Trade> unionStream = streamingContext.socketTextStream(dataStreamHost1, dataStreamPort1).map(TradesAnalytics::convertJsonToTrade)
+    			.union(streamingContext.socketTextStream(dataStreamHost2, dataStreamPort2).map(TradesAnalytics::convertJsonToTrade));
+    	final JavaPairDStream<String, Trade> symbolToTrade = unionStream.mapToPair(t -> new Tuple2<String, Trade>(t.getSymbol(), t));
+    	final JavaMapWithStateDStream<String, Trade, List<Trade>, Tuple2<String, Double>> mapWithState = symbolToTrade.mapWithState(StateSpec.function(new StatefulAggregation()));
     	mapWithState.print();
     	startStreamingAndAwaitTerminationOrTimeout(processingTimeout);
     }
     
-    private static class Aggregation implements Function3<String, Optional<Trade>, State<List<Trade>>, Tuple2<String, Double>> {
+    private static class StatefulAggregation implements Function3<String, Optional<Trade>, State<List<Trade>>, Tuple2<String, Double>> {
 
 		private static final long serialVersionUID = 1L;
 
