@@ -12,6 +12,17 @@ Set up:
 The beauty of this is that the SSA can continuously receive and apply transformation to the received data, grouping it in pre-defined time frames (batch duration).
 Unfortunately, Spark 2.4 doesn't fully support Java 10-11, for instance, in collect operations, so I'd to use Java 8 in the SSA. While I could use Java 11 in the TCP data streaming servers.
 
+## Trades Analytics
+The data streamers send JSON representations of Trades (symbol, price, qty, direction (buy/ sell), exchange) and then applies stateful transformations based on mapWithState. 
+
+```
+{"symbol":"CSGN","price":455.4870609871,"direction":"Sell","quantity":28,"exchange":"EUREX"}
+{"symbol":"AAPL","price":311.5765300990,"direction":"Sell","quantity":14,"exchange":"FTSE"}
+{"symbol":"UBSN","price":339.7060390450,"direction":"Buy","quantity":14,"exchange":"NASDAQ"}
+{"symbol":"GOOG","price":264.5499525436,"direction":"Sell","quantity":59,"exchange":"FTSE"}
+```
+Various real-time analytics will be put in place for metrics like: avg price and quantity per symbol and direction. 
+
 ## Development environment and tools
 - Ubuntu.
 - Eclipse 12-2018.
