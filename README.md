@@ -13,7 +13,7 @@ The beauty of this is that the SSA can continuously receive and apply transforma
 Unfortunately, Spark 2.4 doesn't fully support Java 10-11, for instance, in collect operations, so I'd to use Java 8 in the SSA. While I could use Java 11 in the TCP data streaming servers.
 
 ## Trades Analytics
-The data streamers send JSON representations of Trades (symbol, price, qty, direction (buy/ sell), exchange) and then applies stateful transformations based on mapWithState. 
+The data streamers send JSON representations of Trades (symbol, price, qty, direction (buy/ sell), exchange), the SSA decodes them into Trades object and finally applies stateful transformations based on JavaPairDStream.mapWithState.
 
 ```
 {"symbol":"CSGN","price":455.4870609871,"direction":"Sell","quantity":28,"exchange":"EUREX"}
