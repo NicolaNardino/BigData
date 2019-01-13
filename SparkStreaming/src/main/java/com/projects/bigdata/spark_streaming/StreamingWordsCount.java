@@ -22,9 +22,9 @@ import scala.Tuple2;
  * It then merges the two streams and aggregates them in order to build a words ranking like the following:
  * 		(Word330,93)
  * 		(Word757,92)
- * 		(Word842,91)
- * 		(Word837,91)
  * 		(Word630,91)
+ * 		(Word837,91)
+ * 		(Word842,91)
  * 
  * The reason why it's compiled against Java 8 is that, unfortunately, Spark 2.4 doesn't fully support Java 10-11, for instance, collect operations fail.
  * */
