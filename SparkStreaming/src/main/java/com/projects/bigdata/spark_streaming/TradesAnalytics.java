@@ -24,38 +24,42 @@ import scala.Tuple2;
 
 /**
  * It aggregates two streams of JSON represented {@code Trade}s and then applies stateful aggregations using mapWithState.
- * 
+ *
  * */
 public final class TradesAnalytics extends AbstractStreaming {
-	private static final Logger logger = LoggerFactory.getLogger(TradesAnalytics.class);
-	private static final ObjectMapper mapper = new ObjectMapper();
+    private static final Logger logger = LoggerFactory.getLogger(TradesAnalytics.class);
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public TradesAnalytics(final StreamingAppParameters sap) {
-    	super(sap);
+        super(sap);
     }
-    
-    public void process() throws InterruptedException {    	
-    	final JavaDStream<Trade> unionStream = streamingContext.socketTextStream(dataStreamHost1, dataStreamPort1).map(TradesAnalytics::convertJsonToTrade)
-    			.union(streamingContext.socketTextStream(dataStreamHost2, dataStreamPort2).map(TradesAnalytics::convertJsonToTrade));
-    	final JavaPairDStream<String, Trade> symbolToTrade = unionStream.mapToPair(t -> new Tuple2<String, Trade>(t.getSymbol(), t));
-    	final JavaMapWithStateDStream<String, Trade, List<Trade>, Tuple2<String, Double>> mapWithState = symbolToTrade.mapWithState(StateSpec.function(TradesAnalytics::tradesAggregation));
-    	mapWithState.print();
-    	startStreamingAndAwaitTerminationOrTimeout(processingTimeout);
+
+    public void process() throws InterruptedException {
+        final JavaDStream<Trade> unionStream = streamingContext.socketTextStream(dataStreamHost1, dataStreamPort1).map(TradesAnalytics::convertJsonToTrade)
+                .union(streamingContext.socketTextStream(dataStreamHost2, dataStreamPort2).map(TradesAnalytics::convertJsonToTrade));
+        final JavaPairDStream<String, Trade> symbolToTrade = unionStream.mapToPair(t -> new Tuple2<String, Trade>(t.getSymbol(), t));
+        final JavaMapWithStateDStream<String, Trade, List<Trade>, Tuple2<String, Double>> mapWithState = symbolToTrade.mapWithState(StateSpec.function(TradesAnalytics::tradesAggregation));
+        //mapWithState.print();
+        mapWithState.foreachRDD(rdd -> rdd.collect().stream().map(t -> t.toString()).forEach(logger::info));
+
+        startStreamingAndAwaitTerminationOrTimeout(processingTimeout);
     }
-    
-    private static Tuple2<String, Double> tradesAggregation(final String symbol, Optional<Trade> currentTrade, State<List<Trade>> state) throws Exception {         
-        final List<Trade> tradesState = state.exists() ? state.get() : new ArrayList<>(); 
-        logger.info("Current Trade:\n"+currentTrade.orNull());
-        logger.info("Current Trades:\n"+tradesState.stream().map(t -> t.toString()).collect(Collectors.joining("\n")));
-        if (currentTrade.isPresent()) 
-        	tradesState.add(currentTrade.get());  
-        final Double priceAverage = tradesState.stream().mapToDouble(t -> t.getPrice().doubleValue()).average().orElse(0.0); 
-        logger.info("Current Price Average: "+priceAverage);
-        state.update(tradesState); 
-        return new Tuple2<String, Double>(symbol, priceAverage); 
-	}
-    
+
+    private static Tuple2<String, Double> tradesAggregation(final String symbol, Optional<Trade> currentTrade, State<List<Trade>> state) throws Exception {
+        final List<Trade> tradesState = state.exists() ? state.get() : new ArrayList<>();
+        final StringBuilder sb = new StringBuilder();
+        sb.append("Current Trade:"+currentTrade.orNull()+"\n").append("Current Trades:\n"+tradesState.stream().map(t -> t.toString()).collect(Collectors.joining("\n"))+"\n");
+        if (currentTrade.isPresent())
+            tradesState.add(currentTrade.get());
+        final Double priceAverage = tradesState.stream().mapToDouble(t -> t.getPrice().doubleValue()).average().orElse(0.0);
+        state.update(tradesState);
+        final Tuple2<String, Double> tuple2 = new Tuple2<String, Double>(symbol, priceAverage);
+        sb.append("Result: "+tuple2);
+        logger.info(sb.toString());
+        return tuple2;
+    }
+
     private static Trade convertJsonToTrade(final String jsonTrade) throws JsonParseException, JsonMappingException, IOException {
-    	return mapper.readValue(jsonTrade, Trade.class);
+        return mapper.readValue(jsonTrade, Trade.class);
     }
- }
+}

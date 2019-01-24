@@ -19,7 +19,7 @@ public final class Utility {
 	
 	public static Properties getApplicationProperties(final String propertiesFileName) throws FileNotFoundException, IOException {
 		final Properties p = new Properties();
-		try(final InputStream inputStream = ClassLoader.getSystemResourceAsStream(propertiesFileName)) {
+        try(final InputStream inputStream = ClassLoader.getSystemResourceAsStream(propertiesFileName)) {
 			p.load(inputStream);
 			return p;
 		}

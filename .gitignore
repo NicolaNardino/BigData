@@ -1,10 +1,5 @@
-.metadata/
-RemoteSystemsTempFiles/
-.recommenders/
-.metadata/
-.plugins/
+.idea/
 SparkStreaming/target
-SparkStreaming/log
 TCPDataStreaming/target
-TCPDataStreaming/log
 Utility/target
+Log/

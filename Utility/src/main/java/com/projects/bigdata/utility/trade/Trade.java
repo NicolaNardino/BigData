@@ -5,13 +5,13 @@ import java.math.BigDecimal;
 
 public final class Trade implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	private final String symbol;
 	private final BigDecimal price;
 	private final Direction direction;
 	private final int quantity; //not considering fractional shares.
 	private final Exchange exchange;
-	
+
 	public Trade(final String symbol, final Direction direction, final int quantity, final BigDecimal price, final Exchange exchange) {
 		this.symbol = symbol;
 		this.price = price;
@@ -19,9 +19,10 @@ public final class Trade implements Serializable {
 		this.quantity = quantity;
 		this.exchange = exchange;
 	}
-	
+
 	/**Needed for the JSON deserialization.
 	 * */
+	@SuppressWarnings("unused")
 	private Trade() {
 		symbol = "";
 		price = new BigDecimal(0.0);
