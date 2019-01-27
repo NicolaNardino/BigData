@@ -36,6 +36,11 @@
           <version>${kotlin.version}</version>
           <scope>test</scope>
       </dependency>
+      <dependency>
+          <groupId>com.projects.bigdata</groupId>
+          <artifactId>Utility</artifactId>
+          <version>0.0.1-SNAPSHOT</version>
+      </dependency>
   </dependencies>
   <build>
 		<plugins>
