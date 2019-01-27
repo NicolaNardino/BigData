@@ -6,6 +6,7 @@ import com.projects.bigdata.spark_streaming.utility.StatefulAggregationType;
 import com.projects.bigdata.spark_streaming.utility.StreamingAppFactory;
 import com.projects.bigdata.spark_streaming.utility.StreamingAppParameters;
 import com.projects.bigdata.utility.StreamingLineType;
+
 import com.projects.bigdata.utility.Utility;
 
 public final class StreamingRunner {
@@ -20,7 +21,7 @@ public final class StreamingRunner {
         getStreamingApp(args, sap).process();
     }
 
-    public static AbstractStreaming getStreamingApp(final String[] args, final StreamingAppParameters sap) {
+    private static AbstractStreaming getStreamingApp(final String[] args, final StreamingAppParameters sap) {
         return (args == null || args.length == 0 ? new TradesAnalytics(sap) :
                 StreamingAppFactory.getStreamingApp(StreamingLineType.valueOf(args[0]), sap));
     }

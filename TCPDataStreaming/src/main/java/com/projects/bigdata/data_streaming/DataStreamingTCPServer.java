@@ -1,14 +1,13 @@
 package com.projects.bigdata.data_streaming;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.projects.bigdata.utility.Utility;
 
 /**
@@ -24,7 +23,7 @@ public final class DataStreamingTCPServer implements Runnable {
 	private final ServerSocket serverSocket;
 	private final int messageSendDelayMilliSeconds;
 	private final int port; 
-	final Supplier<String>  streamingLineBuilder;
+	private final Supplier<String>  streamingLineBuilder;
 	private volatile boolean isStopped;
 	
 	public DataStreamingTCPServer(final Supplier<String> streamingLineBuilder, final int port, final int messageSendDelayMilliSeconds) {
@@ -44,7 +43,7 @@ public final class DataStreamingTCPServer implements Runnable {
 	public void run() {
 		Thread.currentThread().setName("Server@"+port);
 		try (final Socket clientSocket = serverSocket.accept();
-			 final PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);) {
+			 final PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true)) {
 			logger.info("Client request received.");
 			while (!isStopped) {
 				final String line = streamingLineBuilder.get();
