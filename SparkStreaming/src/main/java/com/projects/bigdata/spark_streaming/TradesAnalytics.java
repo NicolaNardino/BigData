@@ -23,7 +23,7 @@ import com.projects.bigdata.utility.trade.Trade;
 import scala.Tuple2;
 
 /**
- * It aggregates two streams of JSON represented {@code Trade}s and then applies stateful aggregations using mapWithState.
+ * It aggregates two streams of JSON represented {@code Trade2}s and then applies stateful aggregations using mapWithState.
  *
  * */
 public final class TradesAnalytics extends AbstractStreaming {

@@ -37,7 +37,7 @@ public final class StreamingLineSupplier {
 	}
 
 	/**
-	 * It randomly generates a {@code Trade} obejct and converts it to JSON.
+	 * It randomly generates a {@code Trade2} obejct and converts it to JSON.
 	 *
 	 * @return JSON representations of Trade object.
 	 * */
