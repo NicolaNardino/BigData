@@ -1,6 +1,6 @@
 # Welcome to BigData.Spark
 
-It's about various BigData problems solved with Spark and, in future, NoSQL technologies. While currently it's 70% Java and 30% Kotlin, heading to Kotlin 100%.
+It's about various BigData problems solved with Spark and, in future, NoSQL technologies. While currently it's 70% Kotlin and 30% Java, heading to Kotlin 100%.
 
 ## Word count and ranking of multiple data streams
 The first one of the most recurrent BigData problems: the word count and ranking.
@@ -10,7 +10,6 @@ Set up:
 - The SSA aggregates the data by (full-outer) joining the two input streams and finally builds a ranking. 
 
 The beauty of this is that the SSA can continuously receive and apply transformation to the received data, grouping it in pre-defined time frames (batch duration).
-Unfortunately, Spark 2.4 doesn't fully support Java 10-11, for instance, in collect operations, so I'd to use Java 8 in the SSA. While I could use Java 11 in the TCP data streaming servers.
 
 ## Trades Analytics
 The data streamers send JSON representations of Trades (symbol, price, qty, direction (buy/ sell), exchange), the SSA decodes them into Trades object and finally applies stateful transformations based on JavaPairDStream.mapWithState.
@@ -27,5 +26,5 @@ Various real-time analytics will be put in place for metrics like: avg price and
 - Ubuntu.
 - Intellij.
 - Spark 2.4.
-- Java 8, 11.
+- Java 8.
 - Kotlin 1.3.
