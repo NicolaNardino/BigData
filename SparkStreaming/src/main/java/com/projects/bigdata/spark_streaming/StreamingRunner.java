@@ -23,6 +23,6 @@ public final class StreamingRunner {
 
     private static AbstractStreaming getStreamingApp(final String[] args, final StreamingAppParameters sap) {
         return (args == null || args.length == 0 ? new TradesAnalytics(sap) :
-                StreamingAppFactory.getStreamingApp(StreamingLineType.valueOf(args[0]), sap));
+                StreamingAppFactory.INSTANCE.getStreamingApp(StreamingLineType.valueOf(args[0]), sap));
     }
 }

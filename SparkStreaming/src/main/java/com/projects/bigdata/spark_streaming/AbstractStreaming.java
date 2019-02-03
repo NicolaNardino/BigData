@@ -9,15 +9,15 @@ import com.projects.bigdata.spark_streaming.utility.StreamingAppParameters;
 
 public abstract class AbstractStreaming {
 
-    final protected String dataStreamHost1;
-    final protected int dataStreamPort1;
-    final protected String dataStreamHost2;
-    final protected int dataStreamPort2;
-    final protected long processingTimeout;
-    final protected StatefulAggregationType statefulAggregationType;
-    final protected JavaStreamingContext streamingContext;
+    final String dataStreamHost1;
+    final int dataStreamPort1;
+    final String dataStreamHost2;
+    final int dataStreamPort2;
+    final long processingTimeout;
+    final StatefulAggregationType statefulAggregationType;
+    final JavaStreamingContext streamingContext;
 
-    public AbstractStreaming(final StreamingAppParameters sap) {
+    AbstractStreaming(final StreamingAppParameters sap) {
         this.dataStreamHost1 = sap.getDataStreamHost1();
         this.dataStreamPort1 = sap.getDataStreamPort1();
         this.dataStreamHost2 = sap.getDataStreamHost2();
@@ -28,9 +28,9 @@ public abstract class AbstractStreaming {
         streamingContext.checkpoint(sap.getCheckpointDir());
     }
 
-    public abstract void process() throws Exception;
+    abstract void process() throws Exception;
 
-    protected void startStreamingAndAwaitTerminationOrTimeout(final long timeOutMilliSeconds) throws InterruptedException {
+    void startStreamingAndAwaitTerminationOrTimeout(final long timeOutMilliSeconds) throws InterruptedException {
         streamingContext.start();
         streamingContext.awaitTerminationOrTimeout(processingTimeout);
     }
