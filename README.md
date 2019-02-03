@@ -1,6 +1,6 @@
 # Welcome to BigData.Spark
 
-It's about various BigData problems solved with Spark and, in future, NoSQL technologies. While currently it's 70% Java and 30% Kotlin, heading to Kotlin 100%.
+It's about various BigData problems solved with Spark and, in future, NoSQL technologies. While currently it's 70% Kotlin and 30% Java, heading to Kotlin 100%.
 
 ## Word count and ranking of multiple data streams
 The first one of the most recurrent BigData problems: the word count and ranking.
