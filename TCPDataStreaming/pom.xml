@@ -4,7 +4,7 @@
   <artifactId>TCPDataStreaming</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 		<org.slf4j.version>1.7.25</org.slf4j.version>
 		<log4j.version>2.5</log4j.version>
 		<jackson.databind.version>2.9.8</jackson.databind.version>
@@ -36,34 +36,45 @@
 		  <artifactId>kotlin-stdlib-jdk8</artifactId>
 		  <version>${kotlin.version}</version>
 	  </dependency>
+	  <dependency>
+		  <groupId>org.apache.spark</groupId>
+		  <artifactId>spark-core_2.11</artifactId>
+		  <version>2.4.0</version>
+		  <scope>compile</scope>
+	  </dependency>
+	  <dependency>
+		  <groupId>com.projects.bigdata</groupId>
+		  <artifactId>Utility</artifactId>
+		  <version>0.0.1-SNAPSHOT</version>
+		  <scope>compile</scope>
+	  </dependency>
   </dependencies>
-  <build>
+	<build>
+		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>${java.version}</source>
-					<target>${java.version}</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
+				<groupId>org.jetbrains.kotlin</groupId>
+				<artifactId>kotlin-maven-plugin</artifactId>
+				<version>${kotlin.version}</version>
 				<executions>
 					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
+						<id>compile</id>
+						<phase>compile</phase>
 						<goals>
-							<goal>single</goal>
+							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>test-compile</goal>
 						</goals>
 					</execution>
 				</executions>
+				<configuration>
+					<jvmTarget>${java.version}</jvmTarget>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
