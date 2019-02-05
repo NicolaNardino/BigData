@@ -37,12 +37,12 @@ public final class TradesAnalytics extends AbstractStreaming {
     public void process() throws InterruptedException {
         final JavaDStream<Trade> unionStream = streamingContext.socketTextStream(dataStreamHost1, dataStreamPort1).map(TradesAnalytics::convertJsonToTrade)
                 .union(streamingContext.socketTextStream(dataStreamHost2, dataStreamPort2).map(TradesAnalytics::convertJsonToTrade));
-        final JavaPairDStream<String, Trade> symbolToTrade = unionStream.mapToPair(t -> new Tuple2<String, Trade>(t.getSymbol(), t));
+        final JavaPairDStream<String, Trade> symbolToTrade = unionStream.mapToPair(t -> new Tuple2(t.getSymbol(), t));
         final JavaMapWithStateDStream<String, Trade, List<Trade>, Tuple2<String, Double>> mapWithState = symbolToTrade.mapWithState(StateSpec.function(TradesAnalytics::tradesAggregation));
         //mapWithState.print();
         mapWithState.foreachRDD(rdd -> rdd.collect().stream().map(t -> t.toString()).forEach(logger::info));
 
-        startStreamingAndAwaitTerminationOrTimeout(processingTimeout);
+        startStreamingAndAwaitTerminationOrTimeout();
     }
 
     private static Tuple2<String, Double> tradesAggregation(final String symbol, Optional<Trade> currentTrade, State<List<Trade>> state) throws Exception {
@@ -59,7 +59,7 @@ public final class TradesAnalytics extends AbstractStreaming {
         return tuple2;
     }
 
-    private static Trade convertJsonToTrade(final String jsonTrade) throws JsonParseException, JsonMappingException, IOException {
+    private static Trade convertJsonToTrade(final String jsonTrade) throws IOException {
         return mapper.readValue(jsonTrade, Trade.class);
     }
 }

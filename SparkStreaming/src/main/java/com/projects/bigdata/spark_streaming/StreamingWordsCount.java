@@ -40,7 +40,7 @@ public final class StreamingWordsCount extends AbstractStreaming {
     }
 
     public void process() throws InterruptedException {
-        final JavaReceiverInputDStream<String> inputStream1 = streamingContext.socketTextStream(dataStreamHost1, dataStreamPort1);
+        final JavaReceiverInputDStream<String> inputStream1 = streamingContext.socketTextStream(dataStreamHost2, dataStreamPort1);
         final JavaReceiverInputDStream<String> inputStream2 = streamingContext.socketTextStream(dataStreamHost2, dataStreamPort2);
         final JavaPairDStream<String, Integer> wordCounts = wordCountsFromStream(inputStream1).fullOuterJoin(wordCountsFromStream(inputStream2)).
                 mapToPair(f -> new Tuple2<>(f._1, f._2._1.or(0) + f._2._2.or(0)));
@@ -48,7 +48,7 @@ public final class StreamingWordsCount extends AbstractStreaming {
             case MapWithState: statefulAggregationWithMapWithState(wordCounts); break;
             case UpdateStateByKey: statefulAggregationWithUpdateStateByKey(wordCounts); break;
         }
-        startStreamingAndAwaitTerminationOrTimeout(processingTimeout);
+        startStreamingAndAwaitTerminationOrTimeout();
     }
 
     private static void statefulAggregationWithMapWithState(final JavaPairDStream<String, Integer> wordCounts) {

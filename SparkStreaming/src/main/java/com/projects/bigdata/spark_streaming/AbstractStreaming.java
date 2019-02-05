@@ -30,7 +30,7 @@ public abstract class AbstractStreaming {
 
     abstract void process() throws Exception;
 
-    void startStreamingAndAwaitTerminationOrTimeout(final long timeOutMilliSeconds) throws InterruptedException {
+    void startStreamingAndAwaitTerminationOrTimeout() throws InterruptedException {
         streamingContext.start();
         streamingContext.awaitTerminationOrTimeout(processingTimeout);
     }
