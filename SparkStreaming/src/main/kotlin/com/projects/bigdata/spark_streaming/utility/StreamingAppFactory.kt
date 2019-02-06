@@ -1,8 +1,6 @@
 package com.projects.bigdata.spark_streaming.utility
 
-import com.projects.bigdata.spark_streaming.AbstractStreaming
-import com.projects.bigdata.spark_streaming.StreamingWordsCount
-import com.projects.bigdata.spark_streaming.TradesAnalytics
+import com.projects.bigdata.spark_streaming.*
 import com.projects.bigdata.utility.StreamingLineType
 
 object StreamingAppFactory {
