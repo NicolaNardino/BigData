@@ -26,4 +26,4 @@ Various real-time analytics will be put in place for metrics like: avg price and
 - Ubuntu.
 - Intellij.
 - Spark 2.4.
-- Kotlin 1.3.
+- Kotlin 1.3.20.
