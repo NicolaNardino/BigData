@@ -18,18 +18,15 @@ fun shutdownExecutorService(es: ExecutorService, timeout: Long, timeUnit: TimeUn
     logger.info("ExecutorService shut down.")
 }
 
-fun getApplicationProperties(propertiesFileName: String): Properties {
-    ClassLoader.getSystemResourceAsStream(propertiesFileName)!!.use {
-        val p = Properties()
-        p.load(it)
-        return p
-    }
-}
+fun getApplicationProperties(propertiesFileName: String): Properties =
+        ClassLoader.getSystemResourceAsStream(propertiesFileName)!!.use {
+            val p = Properties()
+            p.load(it)
+            return p
+        }
 
-fun sleep(timeUnit: TimeUnit, timeout: Long) {
-    try {
-        timeUnit.sleep(timeout)
-    } catch (e: InterruptedException) {
-        logger.warn("Sleep interrupted.", e)
-    }
+fun sleep(timeUnit: TimeUnit, timeout: Long) = try {
+    timeUnit.sleep(timeout)
+} catch (e: InterruptedException) {
+    logger.warn("Sleep interrupted.", e)
 }

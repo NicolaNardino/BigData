@@ -8,6 +8,7 @@
 		<org.slf4j.version>1.7.25</org.slf4j.version>
 		<log4j.version>2.5</log4j.version>
         <kotlin.version>1.3.20</kotlin.version>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
   </properties>
   <dependencies>
   	<dependency>
@@ -55,13 +56,6 @@
                         <phase>compile</phase>
                         <goals>
                             <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>test-compile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>test-compile</goal>
                         </goals>
                     </execution>
                 </executions>

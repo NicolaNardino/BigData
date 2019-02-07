@@ -1,12 +1,10 @@
 package com.projects.bigdata.data_streaming
 
 import com.projects.bigdata.utility.*
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import java.io.PrintWriter
 import java.net.ServerSocket
-import java.net.Socket
 import java.util.concurrent.TimeUnit
 
 /**
@@ -23,8 +21,8 @@ class DataStreamingTCPServer(private val streamingLineBuilder: () -> String, pri
     private var isStopped: Boolean = false
 
     init {
-        try {
-            serverSocket = ServerSocket(port)
+        serverSocket = try {
+            ServerSocket(port)
         } catch (e: Exception) {
             throw RuntimeException("Unable to instantiate localhost server@$port", e)
         }
@@ -36,12 +34,12 @@ class DataStreamingTCPServer(private val streamingLineBuilder: () -> String, pri
         Thread.currentThread().name = "Server@$port"
         try {
             serverSocket.accept().use { clientSocket ->
-                PrintWriter(clientSocket.getOutputStream(), true).use { writer ->
+                PrintWriter(clientSocket.getOutputStream(), true).use {
                     logger.info("Client request received.")
                     while (!isStopped) {
                         val line = streamingLineBuilder.invoke()
                         logger.info("Sending line: $line")
-                        writer.println(line)
+                        it.println(line)
                         sleep(TimeUnit.MILLISECONDS, messageSendDelayMilliSeconds.toLong())
                     }
                 }

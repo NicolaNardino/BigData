@@ -30,7 +30,7 @@ import java.util.function.ToIntFunction
  *
  * The reason why it's compiled against Java 8 is that, unfortunately, Spark 2.4 doesn't fully support Java 10-11, for instance, collect operations fail.
  */
-class StreamingWordsCount(sap: StreamingAppParameters) : AbstractStreaming(sap) {
+internal class StreamingWordsCount(sap: StreamingAppParameters) : AbstractStreaming(sap) {
 
     override fun process() {
         val inputStream1 = streamingContext.socketTextStream(sap.dataStreamHost1, sap.dataStreamPort1)

@@ -1,3 +1,4 @@
+@file:JvmName("DataStreamingTCPServersRunner")
 package com.projects.bigdata.data_streaming
 
 import com.projects.bigdata.data_streaming.utility.StreamingLineFactory
@@ -20,20 +21,20 @@ import java.util.stream.Collectors
  * It stops after a configurable processing time.
  */
 fun main(args: Array<String>) {
-    fun getStreamingLineTypeFromCommandLine(args: Array<String>?): () -> String {
-        return if (args != null && !args.isEmpty())
-            StreamingLineFactory.getStreamingLine(StreamingLineType.valueOf(args[0]))
-        else
-            StreamingLineSupplier::randomTrade
+    fun getStreamingLineTypeFromCommandLine(args: Array<String>?): () -> String = if (args != null && !args.isEmpty())
+        StreamingLineFactory.getStreamingLine(StreamingLineType.valueOf(args[0]))
+    else
+        StreamingLineSupplier::randomTrade
+
+    with (getApplicationProperties("server.properties")) {
+        val messageSendDelayMilliSeconds = Integer.valueOf(getProperty("messageSendDelayMilliSeconds"))
+        val dataStreamServers = Arrays.stream(getProperty("port").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).
+                map { port -> DataStreamingTCPServer(getStreamingLineTypeFromCommandLine(args), Integer.valueOf(port), messageSendDelayMilliSeconds) }.
+                collect(Collectors.toList())
+        val execService = Executors.newFixedThreadPool(dataStreamServers.size)
+        dataStreamServers.asSequence().forEach { execService.execute(it) }
+        sleep(TimeUnit.SECONDS, Integer.valueOf(getProperty("upTimeWindowSeconds")).toLong())
+        dataStreamServers.stream().forEach { it.stop() }
+        shutdownExecutorService(execService, 1, TimeUnit.SECONDS)
     }
-    val p = getApplicationProperties("server.properties")
-    val messageSendDelayMilliSeconds = Integer.valueOf(p.getProperty("messageSendDelayMilliSeconds"))
-    val dataStreamServers = Arrays.stream(p.getProperty("port").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).
-            map { port -> DataStreamingTCPServer(getStreamingLineTypeFromCommandLine(args), Integer.valueOf(port), messageSendDelayMilliSeconds) }.
-            collect(Collectors.toList())
-    val execService = Executors.newFixedThreadPool(dataStreamServers.size)
-    dataStreamServers.asSequence().forEach { execService.execute(it) }
-    sleep(TimeUnit.SECONDS, Integer.valueOf(p.getProperty("upTimeWindowSeconds")).toLong())
-    dataStreamServers.stream().forEach { it.stop() }
-    shutdownExecutorService(execService, 1, TimeUnit.SECONDS)
 }
