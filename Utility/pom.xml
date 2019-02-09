@@ -9,6 +9,8 @@
 		<log4j.version>2.5</log4j.version>
         <kotlin.version>1.3.20</kotlin.version>
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
   </properties>
   <dependencies>
   	<dependency>
@@ -36,11 +38,6 @@
           <artifactId>kotlin-test</artifactId>
           <version>${kotlin.version}</version>
           <scope>test</scope>
-      </dependency>
-      <dependency>
-          <groupId>com.projects.bigdata</groupId>
-          <artifactId>Utility</artifactId>
-          <version>0.0.1-SNAPSHOT</version>
       </dependency>
   </dependencies>
   <build>
