@@ -22,6 +22,21 @@ The data streamers send JSON representations of Trades (symbol, price, qty, dire
 ```
 Various real-time analytics will be put in place for metrics like: avg price and quantity per symbol and direction. 
 
+## How to run it
+Inside Intellij, simply run DataStreamingTCPServersRunner and StreamingRunner.
+
+Outside Intellij:
+
+```unix
+    cd TCPDataStreaming
+    mvn package
+    java -jar target/TCPDataStreaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+    ...
+    cd SparkStreaming
+    mvn package
+    java -jar target/SparkStreaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+```
+
 ## Development environment and tools
 - Ubuntu.
 - Intellij.
