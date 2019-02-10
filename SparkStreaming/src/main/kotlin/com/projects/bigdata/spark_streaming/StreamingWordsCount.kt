@@ -3,7 +3,6 @@ package com.projects.bigdata.spark_streaming
 import com.projects.bigdata.spark_streaming.utility.StatefulAggregationType
 import com.projects.bigdata.spark_streaming.utility.StreamingAppParameters
 import org.apache.spark.api.java.Optional
-import org.apache.spark.api.java.function.Function3
 import org.apache.spark.streaming.State
 import org.apache.spark.streaming.StateSpec
 import org.apache.spark.streaming.api.java.JavaPairDStream
@@ -12,10 +11,6 @@ import org.slf4j.LoggerFactory
 import scala.Serializable
 import scala.Tuple2
 import java.util.*
-import java.util.Comparator.comparing
-import java.util.Comparator.reverseOrder
-import java.util.function.Consumer
-import java.util.function.ToIntFunction
 
 
 /**
@@ -82,8 +77,8 @@ internal class StreamingWordsCount(sap: StreamingAppParameters) : AbstractStream
          *
          */
         private fun wordCountsFromStream(lines: JavaReceiverInputDStream<String>): JavaPairDStream<String, Int> {
-            return lines.flatMap { x -> Arrays.asList(*x.split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).iterator() }
-                    .mapToPair { x -> Tuple2(x, 1) }
+            return lines.flatMap { Arrays.asList(*it.split(" ").toTypedArray()).iterator() }
+                    .mapToPair { Tuple2(it, 1) }
                     .reduceByKey { x, y -> x!! + y!! }
         }
     }

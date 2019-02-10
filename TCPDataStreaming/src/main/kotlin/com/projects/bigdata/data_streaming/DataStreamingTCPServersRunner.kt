@@ -6,14 +6,9 @@ import com.projects.bigdata.data_streaming.utility.StreamingLineSupplier
 import com.projects.bigdata.utility.StreamingLineType
 import com.projects.bigdata.utility.*
 
-import java.io.FileNotFoundException
-import java.io.IOException
 import java.util.Arrays
-import java.util.Properties
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-import java.util.function.Consumer
 import java.util.stream.Collectors
 
 /**
@@ -27,14 +22,12 @@ fun main(args: Array<String>) {
         StreamingLineSupplier::randomTrade
 
     with (getApplicationProperties("server.properties")) {
-        val messageSendDelayMilliSeconds = Integer.valueOf(getProperty("messageSendDelayMilliSeconds"))
-        val dataStreamServers = Arrays.stream(getProperty("port").split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()).
-                map { port -> DataStreamingTCPServer(getStreamingLineTypeFromCommandLine(args), Integer.valueOf(port), messageSendDelayMilliSeconds) }.
-                collect(Collectors.toList())
+        val messageSendDelayMilliSeconds = getProperty("messageSendDelayMilliSeconds").toInt()
+        val dataStreamServers = getProperty("port").split(",").asSequence().map { DataStreamingTCPServer(getStreamingLineTypeFromCommandLine(args), Integer.valueOf(it), messageSendDelayMilliSeconds) }.toList()
         val execService = Executors.newFixedThreadPool(dataStreamServers.size)
         dataStreamServers.asSequence().forEach { execService.execute(it) }
         sleep(TimeUnit.SECONDS, Integer.valueOf(getProperty("upTimeWindowSeconds")).toLong())
-        dataStreamServers.stream().forEach { it.stop() }
+        dataStreamServers.stream().forEach(DataStreamingTCPServer::stop)
         shutdownExecutorService(execService, 1, TimeUnit.SECONDS)
     }
 }

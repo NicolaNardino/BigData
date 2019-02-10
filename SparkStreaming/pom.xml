@@ -14,39 +14,39 @@
 	  	<maven.compiler.target>${java.version}</maven.compiler.target>
   </properties>
   <dependencies>
-  	<dependency>
+  		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-core_${scala.binary.version}</artifactId>
 			<version>${spark.version}</version>
-	</dependency>
-	<dependency>
+		</dependency>
+		<dependency>
 			<groupId>org.apache.spark</groupId>
 			<artifactId>spark-streaming_${scala.binary.version}</artifactId>
 			<version>${spark.version}</version>
-	</dependency>
-	<!-- below dependency is to work around https://issues.apache.org/jira/browse/SPARK-5557. -->
-	<dependency>
-    		<groupId>org.eclipse.jetty.orbit</groupId>
+		</dependency>
+		<!-- following dependency is to work around https://issues.apache.org/jira/browse/SPARK-5557. -->
+		<dependency>
+			<groupId>org.eclipse.jetty.orbit</groupId>
       		<artifactId>javax.servlet</artifactId>
       		<version>3.0.0.v201112011016</version>
-    </dependency>
-	  <dependency>
-		  <groupId>com.projects.bigdata</groupId>
-		  <artifactId>Utility</artifactId>
-		  <version>0.0.1-SNAPSHOT</version>
-	  </dependency>
-	  <dependency>
-		  <groupId>org.jetbrains.kotlin</groupId>
-		  <artifactId>kotlin-stdlib-jdk8</artifactId>
-		  <version>${kotlin.version}</version>
-	  </dependency>
-	  <dependency>
-		  <groupId>org.jetbrains.kotlin</groupId>
-		  <artifactId>kotlin-test</artifactId>
-		  <version>${kotlin.version}</version>
-		  <scope>test</scope>
-	  </dependency>
-  </dependencies>
+    	</dependency>
+		<dependency>
+			<groupId>com.projects.bigdata</groupId>
+		    <artifactId>Utility</artifactId>
+		    <version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.jetbrains.kotlin</groupId>
+		  	<artifactId>kotlin-stdlib-jdk8</artifactId>
+		  	<version>${kotlin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jetbrains.kotlin</groupId>
+		  	<artifactId>kotlin-test</artifactId>
+		  	<version>${kotlin.version}</version>
+		  	<scope>test</scope>
+		</dependency>
+  	</dependencies>
 	<build>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
 		<plugins>

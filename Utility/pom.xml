@@ -13,32 +13,32 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
   </properties>
   <dependencies>
-  	<dependency>
-  		<groupId>org.slf4j</groupId>
-  		<artifactId>slf4j-api</artifactId>
-  		<version>${org.slf4j.version}</version>
-	</dependency>
-  	<dependency>
-  		<groupId>org.slf4j</groupId>
-  		<artifactId>slf4j-log4j12</artifactId>
-  		<version>${org.slf4j.version}</version>
-	</dependency>
-  	<dependency>
-    	<groupId>org.apache.logging.log4j</groupId>
-    	<artifactId>log4j-core</artifactId>
-    	<version>${log4j.version}</version>
-  	</dependency>
-      <dependency>
-          <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-stdlib-jdk8</artifactId>
-          <version>${kotlin.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>org.jetbrains.kotlin</groupId>
-          <artifactId>kotlin-test</artifactId>
-          <version>${kotlin.version}</version>
-          <scope>test</scope>
-      </dependency>
+  	    <dependency>
+  		    <groupId>org.slf4j</groupId>
+  		    <artifactId>slf4j-api</artifactId>
+  		    <version>${org.slf4j.version}</version>
+	    </dependency>
+  	    <dependency>
+  		    <groupId>org.slf4j</groupId>
+  		    <artifactId>slf4j-log4j12</artifactId>
+  		    <version>${org.slf4j.version}</version>
+	    </dependency>
+  	    <dependency>
+    	    <groupId>org.apache.logging.log4j</groupId>
+    	    <artifactId>log4j-core</artifactId>
+    	    <version>${log4j.version}</version>
+  	    </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
   </dependencies>
   <build>
         <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
