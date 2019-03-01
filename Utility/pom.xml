@@ -1,65 +1,40 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>com.projects.bigdata</groupId>
+    <parent>
+        <groupId>com.projects.bigdata</groupId>
+        <artifactId>Parent</artifactId>
+        <version>1.0</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
   <artifactId>Utility</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <properties>
-		<java.version>1.8</java.version>
-		<org.slf4j.version>1.7.25</org.slf4j.version>
-		<log4j.version>2.5</log4j.version>
-        <kotlin.version>1.3.20</kotlin.version>
-        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-  </properties>
   <dependencies>
   	    <dependency>
   		    <groupId>org.slf4j</groupId>
   		    <artifactId>slf4j-api</artifactId>
-  		    <version>${org.slf4j.version}</version>
 	    </dependency>
   	    <dependency>
   		    <groupId>org.slf4j</groupId>
   		    <artifactId>slf4j-log4j12</artifactId>
-  		    <version>${org.slf4j.version}</version>
 	    </dependency>
   	    <dependency>
     	    <groupId>org.apache.logging.log4j</groupId>
     	    <artifactId>log4j-core</artifactId>
-    	    <version>${log4j.version}</version>
   	    </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
-            <version>${kotlin.version}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-test</artifactId>
-            <version>${kotlin.version}</version>
             <scope>test</scope>
         </dependency>
   </dependencies>
-  <build>
-        <sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
-		<plugins>
+    <build>
+        <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <version>${kotlin.version}</version>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <jvmTarget>${java.version}</jvmTarget>
-                </configuration>
             </plugin>
         </plugins>
-	</build>
+    </build>
 </project>

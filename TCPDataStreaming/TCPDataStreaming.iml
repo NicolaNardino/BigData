@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="AutoImportedSourceRoots">
+    <option name="directories">
+      <list>
+        <option value="$MODULE_DIR$/src/main/kotlin" />
+      </list>
+    </option>
+  </component>
   <component name="EclipseModuleManager">
     <conelement value="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER" />
     <src_description expected_position="0">
