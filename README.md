@@ -25,7 +25,7 @@ Various real-time analytics will be put in place for metrics like: avg price and
 ## How to run it
 Inside Intellij, simply run DataStreamingTCPServersRunner and StreamingRunner.
 
-Outside Intellij, I've set up a multi-module Mave project, which builds both executable projects along with their Utility dependency:
+As a multi-module Mave project, it builds both executable projects along with their Utility dependency:
 
 ```unix
     cd <application root>
