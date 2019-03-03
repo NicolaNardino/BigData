@@ -25,7 +25,16 @@ Various real-time analytics will be put in place for metrics like: avg price and
 ## How to run it
 Inside Intellij, simply run DataStreamingTCPServersRunner and StreamingRunner.
 
-As a multi-module Mave project, it builds both executable projects along with their Utility dependency:
+Furthermore, there's a multi-module Maven project: 
+```unix
+    <modules>
+        <module>Utility</module>
+        <module>TCPDataStreaming</module>
+        <module>SparkStreaming</module>
+    </modules>
+```
+
+Which builds both executable projects along with their Utility dependency:
 
 ```unix
     cd <application root>
