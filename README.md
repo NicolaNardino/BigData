@@ -51,10 +51,29 @@ Running mvn package in the parent pom, it creates Docker images for both the TCP
     docker run --name tcp-data-streaming -it --network=host nicolanardino/tcp-data-streaming:1.0
     docker run --name spark-streaming -it --network=host nicolanardino/spark-streaming:1.0
 ```
+On with Docker Compose:
+
+```unix
+    version: '3.4'
+
+services:
+  tcp-data-streaming:
+        image: nicolanardino/tcp-data-streaming:1.0
+        container_name: tcp-data-streaming-container
+        restart: always
+        network_mode: "host"
+  spark-streaming:
+     image: nicolanardino/spark-streaming:1.0
+     container_name: spark-streaming-container
+     depends_on:
+       - tcp-data-streaming
+     restart: always
+     network_mode: "host"
+```
 
 ## Development environment and tools
 - Ubuntu.
 - Intellij.
 - Spark 2.4.
 - Kotlin 1.3.20.
-- Docker.
+- Docker/ Docker Compose.
