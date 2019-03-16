@@ -25,16 +25,23 @@ Various real-time analytics will be put in place for metrics like: avg price and
 ## How to run it
 Inside Intellij, simply run DataStreamingTCPServersRunner and StreamingRunner.
 
-Outside Intellij:
+Furthermore, there's a multi-module Maven project: 
+```unix
+    <modules>
+        <module>Utility</module>
+        <module>TCPDataStreaming</module>
+        <module>SparkStreaming</module>
+    </modules>
+```
+
+Which builds both executable projects along with their Utility dependency:
 
 ```unix
-    cd TCPDataStreaming
+    cd <application root>
     mvn package
-    java -jar target/TCPDataStreaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+    java -jar target/TCPDataStreaming-1.0-jar-with-dependencies.jar
     ...
-    cd SparkStreaming
-    mvn package
-    java -jar target/SparkStreaming-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+    java -jar target/SparkStreaming-1.0-jar-with-dependencies.jar
 ```
 
 ## Development environment and tools
