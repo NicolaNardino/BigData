@@ -1,6 +1,7 @@
 # Welcome to BigData.Spark
 
 It's about various BigData problems solved with Spark and, in future, NoSQL technologies. 
+The server components are packaged in Docker images.
 
 ## Word count and ranking of multiple data streams
 The first one of the most recurrent BigData problems: the word count and ranking.
@@ -43,9 +44,17 @@ Which builds both executable projects along with their Utility dependency:
     ...
     java -jar target/SparkStreaming-1.0-jar-with-dependencies.jar
 ```
+### With Docker
+Running mvn package in the parent pom, it creates Docker images for both the TCP Data Streaming Servers and the Spark Streaming Server, which can then be run by:
+
+```unix
+    docker run --name tcp-data-streaming -it --network=host nicolanardino/tcp-data-streaming:1.0
+    docker run --name spark-streaming -it --network=host nicolanardino/spark-streaming:1.0
+```
 
 ## Development environment and tools
 - Ubuntu.
 - Intellij.
 - Spark 2.4.
 - Kotlin 1.3.20.
+- Docker.
