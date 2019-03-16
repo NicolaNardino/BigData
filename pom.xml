@@ -3,11 +3,11 @@
 
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.projects.bigdata</groupId>
-    <artifactId>Parent</artifactId>
+    <artifactId>parent</artifactId>
     <version>1.0</version>
     <packaging>pom</packaging>
 
-    <name>Parent</name>
+    <name>parent</name>
     <description>Parent pom.</description>
     <modules>
         <module>Utility</module>
@@ -26,6 +26,8 @@
         <jackson.databind.version>2.6.7</jackson.databind.version>
         <spark.version>2.4.0</spark.version>
         <scala.binary.version>2.11</scala.binary.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.jar.with.dependencies>${project.name}-${project.version}-jar-with-dependencies.jar</project.jar.with.dependencies>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -116,6 +118,45 @@
                                     <descriptorRef>jar-with-dependencies</descriptorRef>
                                 </descriptorRefs>
                             </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>io.fabric8</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.28.0</version>
+                    <configuration>
+                        <images>
+                            <image>
+                                <name>nicolanardino/${docker.image.name}:${project.version}</name>
+                                <alias>${project.artifactId}</alias>
+                                <build>
+                                    <from>nicolanardino/ubuntu-openjdk-8:1.0</from>
+                                    <assembly>
+                                        <targetDir>/deployments</targetDir>
+                                        <inline>
+                                            <files>
+                                                <file>
+                                                    <source>target/${project.jar.with.dependencies}</source>
+                                                    <fileMode>755</fileMode>
+                                                </file>
+                                            </files>
+                                        </inline>
+                                    </assembly>
+                                    <maintainer>Nicola Nardino, https://github.com/NicolaNardino</maintainer>
+                                    <cmd>java -jar deployments/${project.jar.with.dependencies}</cmd>
+                                    <optimise>true</optimise>
+                                </build>
+                            </image>
+                        </images>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>docker:build</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>build</goal>
+                            </goals>
                         </execution>
                     </executions>
                 </plugin>

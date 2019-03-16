@@ -1,14 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>com.projects.bigdata</groupId>
-		<artifactId>Parent</artifactId>
+		<artifactId>parent</artifactId>
 		<version>1.0</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-  <artifactId>TCPDataStreaming</artifactId>
+  	<artifactId>TCPDataStreaming</artifactId>
   <properties>
 	  	<main.class>com.projects.bigdata.data_streaming.DataStreamingTCPServersRunner</main.class>
+	  	<docker.image.name>tcp-data-streaming</docker.image.name>
   </properties>
 
   <dependencies>
@@ -45,7 +46,12 @@
 				<artifactId>kotlin-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
