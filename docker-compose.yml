@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  tcp-data-streaming:
+        image: nicolanardino/tcp-data-streaming:1.0
+        container_name: tcp-data-streaming-container
+        restart: always
+        network_mode: "host"
+  spark-streaming:
+     image: nicolanardino/spark-streaming:1.0
+     container_name: spark-streaming-container
+     depends_on:
+       - tcp-data-streaming
+     restart: always
+     network_mode: "host"
