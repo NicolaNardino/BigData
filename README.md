@@ -70,6 +70,9 @@ services:
      restart: always
      network_mode: "host"
 ```
+```unix
+docker-compose up -d
+```
 
 ## Development environment and tools
 - Ubuntu.
