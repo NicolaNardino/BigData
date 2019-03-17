@@ -51,7 +51,7 @@ Running mvn package in the parent pom, it creates Docker images for both the TCP
     docker run --name tcp-data-streaming -it --network=host nicolanardino/tcp-data-streaming:1.0
     docker run --name spark-streaming -it --network=host nicolanardino/spark-streaming:1.0
 ```
-On with Docker Compose:
+Or with Docker Compose:
 
 ```unix
     version: '3.4'
