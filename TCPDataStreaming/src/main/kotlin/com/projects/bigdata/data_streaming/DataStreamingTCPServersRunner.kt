@@ -1,6 +1,7 @@
 @file:JvmName("DataStreamingTCPServersRunner")
 package com.projects.bigdata.data_streaming
 
+import com.projects.bigdata.data_streaming.cassandra.CassandraManager
 import com.projects.bigdata.data_streaming.utility.StreamingLineFactory
 import com.projects.bigdata.data_streaming.utility.StreamingLineSupplier
 import com.projects.bigdata.utility.StreamingLineType
@@ -20,7 +21,6 @@ fun main(args: Array<String>) {
         StreamingLineFactory.getStreamingLine(StreamingLineType.valueOf(args[0]))
     else
         StreamingLineSupplier::randomTrade
-
     with (getApplicationProperties("server.properties")) {
         val messageSendDelayMilliSeconds = getProperty("messageSendDelayMilliSeconds").toInt()
         val dataStreamServers = getProperty("port").split(",").asSequence().map { DataStreamingTCPServer(getStreamingLineTypeFromCommandLine(args), Integer.valueOf(it), messageSendDelayMilliSeconds) }.toList()

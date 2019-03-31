@@ -2,6 +2,8 @@ package com.projects.bigdata.data_streaming.utility
 
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.projects.bigdata.data_streaming.cassandra.CassandraManager
+import com.projects.bigdata.data_streaming.com.projects.bigdata.data_streaming.cassandra.CassandraStore
 import com.projects.bigdata.utility.*
 import com.projects.bigdata.utility.trade.Direction
 import com.projects.bigdata.utility.trade.Exchange
@@ -22,6 +24,7 @@ import java.util.concurrent.ThreadLocalRandom.current
 object StreamingLineSupplier {
     private val logger = LoggerFactory.getLogger(StreamingLineSupplier::class.java)
     private val mapper = ObjectMapper()
+    private val cassandraStore = CassandraStore(CassandraManager("127.0.0.1", 9042))
 
     /**
      * It generates a phrase made up by randomly generated words.
@@ -42,8 +45,10 @@ object StreamingLineSupplier {
      */
     fun randomTrade(): String {
         return try {
-            mapper.writeValueAsString(Trade(Symbols[current().nextInt(Symbols.size)], getRandomEnumValue(Direction::class.java), current().nextInt(1, 100),
-                    BigDecimal(current().nextDouble(1.0, 999.0)), getRandomEnumValue(Exchange::class.java)))
+            val trade = Trade(Symbols[current().nextInt(Symbols.size)], getRandomEnumValue(Direction::class.java), current().nextInt(1, 100),
+                    BigDecimal(current().nextDouble(1.0, 999.0)), getRandomEnumValue(Exchange::class.java))
+            cassandraStore.storeTrade(trade)
+            mapper.writeValueAsString(trade)
         } catch (e: JsonProcessingException) {
             logger.warn("Unable to build JSON string.", e)
             ""

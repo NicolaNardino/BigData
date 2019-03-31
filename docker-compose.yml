@@ -1,15 +1,24 @@
 version: '3.4'
 
 services:
+  cassandra-db:
+    image: cassandra:latest
+    container_name: cassandra-db
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ~/data/docker/cassandra:/var/lib/cassandra
   tcp-data-streaming:
-        image: nicolanardino/tcp-data-streaming:1.0
-        container_name: tcp-data-streaming-container
-        restart: always
-        network_mode: "host"
+    image: nicolanardino/tcp-data-streaming:2.0
+    container_name: tcp-data-streaming
+    depends_on:
+      - cassandra-db
+    restart: always
+    network_mode: "host"
   spark-streaming:
-     image: nicolanardino/spark-streaming:1.0
-     container_name: spark-streaming-container
-     depends_on:
-       - tcp-data-streaming
-     restart: always
-     network_mode: "host"
+    image: nicolanardino/spark-streaming:1.0
+    container_name: spark-streaming
+    depends_on:
+      - tcp-data-streaming
+    restart: always
+    network_mode: "host"

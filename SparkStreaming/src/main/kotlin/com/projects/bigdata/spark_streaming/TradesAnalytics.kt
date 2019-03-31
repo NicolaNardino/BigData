@@ -6,18 +6,11 @@ import com.projects.bigdata.utility.trade.Trade
 import org.apache.spark.api.java.Optional
 import org.apache.spark.streaming.State
 import org.apache.spark.streaming.StateSpec
-import org.apache.spark.streaming.api.java.JavaDStream
-import org.apache.spark.streaming.api.java.JavaMapWithStateDStream
-import org.apache.spark.streaming.api.java.JavaPairDStream
-import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import scala.Array
 import scala.Tuple2
 
-import java.io.IOException
 import java.io.Serializable
 import java.util.ArrayList
-import java.util.function.Consumer
 import java.util.stream.Collectors
 
 /**
@@ -43,10 +36,10 @@ class TradesAnalytics(sap: StreamingAppParameters) : AbstractStreaming(sap) {
         private fun tradesAggregation(symbol: String, currentTrade: Optional<Trade>, state: State<ArrayList<Trade>>): Tuple2<String, Double> {
             val tradesState = if (state.exists()) state.get() else ArrayList()
             val sb = StringBuilder()
-            sb.append("Current Trade:" + currentTrade.orNull() + "\n").append("Current Trades:\n" + tradesState.stream().map { t -> t.toString() }.collect(Collectors.joining("\n")) + "\n")
+            sb.append("Current Trade:" + currentTrade.orNull() + "\n").append("Current Trades:\n" + tradesState.stream().map { it.toString() }.collect(Collectors.joining("\n")) + "\n")
             if (currentTrade.isPresent)
                 tradesState.add(currentTrade.get())
-            val priceAverage = tradesState.stream().mapToDouble { t -> t.price.toDouble() }.average().orElse(0.0)
+            val priceAverage = tradesState.stream().mapToDouble { it.price.toDouble() }.average().orElse(0.0)
             state.update(tradesState)
             val tuple2 = Tuple2(symbol, priceAverage)
             sb.append("Result: $tuple2")

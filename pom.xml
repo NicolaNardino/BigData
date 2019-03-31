@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.projects.bigdata</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0</version>
+    <version>2.0</version>
     <packaging>pom</packaging>
 
     <name>parent</name>
@@ -26,6 +26,7 @@
         <jackson.databind.version>2.6.7</jackson.databind.version>
         <spark.version>2.4.0</spark.version>
         <scala.binary.version>2.11</scala.binary.version>
+        <cassandra.core.version>3.1.0</cassandra.core.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.jar.with.dependencies>${project.name}-${project.version}-jar-with-dependencies.jar</project.jar.with.dependencies>
     </properties>
@@ -71,6 +72,11 @@
                 <groupId>org.apache.spark</groupId>
                 <artifactId>spark-streaming_${scala.binary.version}</artifactId>
                 <version>${spark.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.datastax.cassandra</groupId>
+                <artifactId>cassandra-driver-core</artifactId>
+                <version>${cassandra.core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
