@@ -1,6 +1,6 @@
 # Welcome to BigData.Spark
 
-It's about various BigData problems solved with Spark and, in future, NoSQL technologies. 
+It's about various BigData problems solved with Spark and NoSQL technologies. 
 The server components are packaged in Docker images, published to my DockerHub [account](https://hub.docker.com/u/nicolanardino).
 
 ## Word count and ranking of multiple data streams
@@ -48,6 +48,7 @@ Which builds both executable projects along with their Utility dependency:
 Running mvn package in the parent pom, it creates Docker images for both the TCP Data Streaming Servers and the Spark Streaming Server, which can then be run by:
 
 ```unix
+    docker run --name cassandra-db -v ~/data/docker/cassandra:/var/lib/cassandra --network=host cassandra:latest
     docker run --name tcp-data-streaming -it --network=host nicolanardino/tcp-data-streaming:1.0
     docker run --name spark-streaming -it --network=host nicolanardino/spark-streaming:1.0
 ```
@@ -57,21 +58,40 @@ Or with Docker Compose:
 version: '3.4'
 
 services:
+  cassandra-db:
+    image: cassandra:latest
+    container_name: cassandra-db
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ~/data/docker/cassandra:/var/lib/cassandra
   tcp-data-streaming:
-        image: nicolanardino/tcp-data-streaming:1.0
-        container_name: tcp-data-streaming-container
-        restart: always
-        network_mode: "host"
+    image: nicolanardino/tcp-data-streaming:2.0
+    container_name: tcp-data-streaming
+    depends_on:
+      - cassandra-db
+    restart: always
+    network_mode: "host"
   spark-streaming:
-     image: nicolanardino/spark-streaming:1.0
-     container_name: spark-streaming-container
-     depends_on:
-       - tcp-data-streaming
-     restart: always
-     network_mode: "host"
+    image: nicolanardino/spark-streaming:1.0
+    container_name: spark-streaming
+    depends_on:
+      - tcp-data-streaming
+    restart: always
+    network_mode: "host"
 ```
 ```unix
 docker-compose up -d
+```
+
+### Cassandra
+At the moment,the interaction with Cassandra is at an early stage. In order to have it working, keyspace and table have to be created manually as follows
+
+```sql
+create KEYSPACE spark_data with replication={'class':'SimpleStrategy', 'replication_factor':1};
+use spark_data;
+create table Trade(symbol text, direction text, quantity int, price double, exchange text, timestamp timestamp, primary key (timestamp));
+
 ```
 
 ## Development environment and tools
@@ -79,4 +99,5 @@ docker-compose up -d
 - Intellij.
 - Spark 2.4.
 - Kotlin 1.3.20.
+- Cassandra.
 - Docker/ Docker Compose.
