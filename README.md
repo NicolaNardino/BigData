@@ -54,7 +54,7 @@ Running mvn package in the parent pom, it creates Docker images for both the TCP
 Or with Docker Compose:
 
 ```unix
-    version: '3.4'
+version: '3.4'
 
 services:
   tcp-data-streaming:
@@ -69,6 +69,9 @@ services:
        - tcp-data-streaming
      restart: always
      network_mode: "host"
+```
+```unix
+docker-compose up -d
 ```
 
 ## Development environment and tools
