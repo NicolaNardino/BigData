@@ -49,8 +49,8 @@ Running mvn package in the parent pom, it creates Docker images for both the TCP
 
 ```unix
     docker run --name cassandra-db -v ~/data/docker/cassandra:/var/lib/cassandra --network=host cassandra:latest
-    docker run --name tcp-data-streaming -it --network=host nicolanardino/tcp-data-streaming:1.0
-    docker run --name spark-streaming -it --network=host nicolanardino/spark-streaming:1.0
+    docker run --name tcp-data-streaming --network=host nicolanardino/tcp-data-streaming:2.0
+    docker run --name spark-streaming --network=host nicolanardino/spark-streaming:2.0
 ```
 Or with Docker Compose:
 
