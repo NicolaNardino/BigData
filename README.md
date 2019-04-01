@@ -85,7 +85,7 @@ docker-compose up -d
 ```
 
 ### Cassandra
-At the moment,the interaction with Cassandra is at an early stage. In order to have it working, keyspace and table have to be created manually as follows
+Objects set up at application start-up:
 
 ```sql
 create KEYSPACE spark_data with replication={'class':'SimpleStrategy', 'replication_factor':1};
