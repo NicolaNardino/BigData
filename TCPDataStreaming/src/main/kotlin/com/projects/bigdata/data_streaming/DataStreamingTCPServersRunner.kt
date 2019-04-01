@@ -30,11 +30,11 @@ fun main(args: Array<String>) {
     }
     with (getApplicationProperties("server.properties")) {
         setUpCassandraObjects(this)
-        val messageSendDelayMilliSeconds = getProperty("messageSendDelayMilliSeconds").toInt()
-        val dataStreamServers = getProperty("port").split(",").asSequence().map { DataStreamingTCPServer(getStreamingLineTypeFromCommandLine(args), Integer.valueOf(it), messageSendDelayMilliSeconds) }.toList()
+        val messageSendDelayMilliSeconds = getProperty("server.messageSendDelayMilliSeconds").toInt()
+        val dataStreamServers = getProperty("server.port").split(",").asSequence().map { DataStreamingTCPServer(getStreamingLineTypeFromCommandLine(args), Integer.valueOf(it), messageSendDelayMilliSeconds) }.toList()
         val execService = Executors.newFixedThreadPool(dataStreamServers.size)
         dataStreamServers.asSequence().forEach { execService.execute(it) }
-        sleep(TimeUnit.SECONDS, Integer.valueOf(getProperty("upTimeWindowSeconds")).toLong())
+        sleep(TimeUnit.SECONDS, Integer.valueOf(getProperty("server.upTimeWindowSeconds")).toLong())
         dataStreamServers.stream().forEach(DataStreamingTCPServer::stop)
         shutdownExecutorService(execService, 1, TimeUnit.SECONDS)
     }
