@@ -8,11 +8,11 @@ import java.math.BigDecimal
 
 fun main() {
     val cassandraManager = CassandraManager("127.0.0.1", 9042)
-    var trades = listOf(Trade("1", Direction.Buy, 1, BigDecimal.TEN, Exchange.FTSE),
+    val trades = listOf(Trade("1", Direction.Buy, 1, BigDecimal.TEN, Exchange.FTSE),
             Trade("2", Direction.Buy, 1, BigDecimal.ONE, Exchange.EUREX),
             Trade("3", Direction.Sell, 1, BigDecimal.ZERO, Exchange.NASDAQ))
     cassandraManager.use {
-        val cassandraStore = CassandraStore(it)
+        val cassandraStore = CassandraDataStore(it)
         trades.forEach {trade ->  cassandraStore.storeTrade(trade)}
     }
 }

@@ -2,12 +2,13 @@
 package com.projects.bigdata.data_streaming
 
 import com.projects.bigdata.data_streaming.cassandra.CassandraManager
+import com.projects.bigdata.data_streaming.com.projects.bigdata.data_streaming.cassandra.CassandraDataStore
 import com.projects.bigdata.data_streaming.utility.StreamingLineFactory
 import com.projects.bigdata.data_streaming.utility.StreamingLineSupplier
 import com.projects.bigdata.utility.StreamingLineType
 import com.projects.bigdata.utility.*
+import java.util.*
 
-import java.util.Arrays
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 import java.util.stream.Collectors
@@ -21,7 +22,14 @@ fun main(args: Array<String>) {
         StreamingLineFactory.getStreamingLine(StreamingLineType.valueOf(args[0]))
     else
         StreamingLineSupplier::randomTrade
+    fun setUpCassandraObjects(p: Properties) {
+        with(CassandraDataStore(CassandraManager(p.getProperty("cassandra.node"), p.getProperty("cassandra.port").toInt()))) {
+            createKeyspaceIfNotExists(p.getProperty("cassandra.keyspaceName"), p.getProperty("cassandra.replicationStrategy"), p.getProperty("cassandra.replicationFactor").toInt())
+            createTableIfNotExists(p.getProperty("cassandra.tableDefinition.trade"))
+        }
+    }
     with (getApplicationProperties("server.properties")) {
+        setUpCassandraObjects(this)
         val messageSendDelayMilliSeconds = getProperty("messageSendDelayMilliSeconds").toInt()
         val dataStreamServers = getProperty("port").split(",").asSequence().map { DataStreamingTCPServer(getStreamingLineTypeFromCommandLine(args), Integer.valueOf(it), messageSendDelayMilliSeconds) }.toList()
         val execService = Executors.newFixedThreadPool(dataStreamServers.size)
