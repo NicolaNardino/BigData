@@ -118,7 +118,8 @@ curl localhost:9100/cassandra/getTradesByExchangeAndDirectionAndSymbol/FTSE/Buy/
 ## Development environment and tools
 - Ubuntu.
 - Intellij.
-- Spark 2.4.
-- Kotlin 1.3.20.
+- Spark 2.4.1. 
+- Kotlin 1.3.21. 
 - Cassandra.
 - Docker/ Docker Compose.
+- Spring Boot. 
