@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory
 
 class CassandraManager(node: String, port: Int) : AutoCloseable {
 
-    private val cluster:  Cluster = Cluster.builder().addContactPoint(node).withPort(port).build()
+    private val cluster:  Cluster = Cluster.builder().withoutJMXReporting().withoutMetrics().addContactPoint(node).withPort(port).build()
     val session: Session
 
     init {

@@ -9,7 +9,7 @@ class CassandraDataStore(private val cassandraManager: CassandraManager) : ICass
     override fun storeTrade (trade: Trade) {
         val sb = StringBuilder("insert into spark_data.trade (symbol, direction, quantity, price, exchange, timestamp) ")
                 .append("values ('").append(trade.symbol).append("', '").append(trade.direction).append("', ").append(trade.quantity)
-                .append(", ").append(trade.price).append(", '").append(trade.exchange).append("', '").append(trade.timestamp).append("')")
+                .append(", ").append(trade.price).append(", '").append(trade.exchange).append("', ").append(trade.timestamp).append(")")
         val insertQuery = sb.toString()
         logger.debug("Executing $insertQuery")
         cassandraManager.session.execute(insertQuery)

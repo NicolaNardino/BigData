@@ -42,7 +42,7 @@
 			  <artifactId>Utility</artifactId>
 			<version>${project.version}</version>
 	  	</dependency>
-  	</dependencies>
+  </dependencies>
 	<build>
 		<plugins>
 			<plugin>
