@@ -10,8 +10,8 @@
     <description>Parent pom.</description>
     <modules>
         <module>Utility</module>
-        <module>TCPDataStreaming</module>
-        <module>SparkStreaming</module>
+        <!--<module>TCPDataStreaming</module>
+        <module>SparkStreaming</module>-->
         <module>CassandraMicroservice</module>
     </modules>
 
@@ -182,11 +182,6 @@
                             </goals>
                         </execution>
                     </executions>
-                </plugin>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <version>${spring.boot.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>

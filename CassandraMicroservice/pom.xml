@@ -9,7 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>CassandraMicroservice</artifactId>
-
+    <properties>
+        <docker.image.name>cassandra-microservice</docker.image.name>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -42,18 +44,69 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
                 <artifactId>kotlin-maven-plugin</artifactId>
-                <configuration>
+                <configuration combine.self="override">
                     <args>
                         <arg>-Xjsr305=strict</arg>
                     </args>
+                    <jvmTarget>${java.version}</jvmTarget>
+                    <sourceDirs>
+                        <sourceDir>${project.basedir}/src/main/kotlin</sourceDir>
+                    </sourceDirs>
                     <compilerPlugins>
                         <plugin>spring</plugin>
                     </compilerPlugins>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jetbrains.kotlin</groupId>
+                        <artifactId>kotlin-maven-allopen</artifactId>
+                        <version>${kotlin.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.maven.plugin.version}</version>
+                <configuration combine.self="override">
+                    <images>
+                        <image>
+                            <name>nicolanardino/${docker.image.name}:${project.version}</name>
+                            <alias>${project.artifactId}</alias>
+                            <build>
+                                <from>nicolanardino/ubuntu-openjdk-8:1.0</from>
+                                <assembly>
+                                    <targetDir>/deployments</targetDir>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                                <maintainer>Nicola Nardino, https://github.com/NicolaNardino</maintainer>
+                                <cmd>java -jar deployments/${project.name}-${project.version}.jar</cmd>
+                                <optimise>true</optimise>
+                            </build>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>docker:build</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

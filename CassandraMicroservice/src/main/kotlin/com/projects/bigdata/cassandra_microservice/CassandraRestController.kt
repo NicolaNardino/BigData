@@ -23,8 +23,7 @@ class CassandraRestController {
     fun getAllTrades(): ResponseEntity<List<Trade>> = ResponseEntity(cassandraTradeRepository.findAll(), HttpStatus.OK)
 
     @GetMapping("/getTradesByExchange/{exchange}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getTradesByExchange(@PathVariable exchange: Exchange): ResponseEntity<List<Trade>> =
-            ResponseEntity(cassandraTradeRepository.findByExchange(exchange), HttpStatus.OK)
+    fun getTradesByExchange(@PathVariable exchange: Exchange): ResponseEntity<List<Trade>> = ResponseEntity.ok(cassandraTradeRepository.findByExchange(exchange))
 
     @GetMapping("/getTradesByExchangeAndDirection/{exchange}/{direction}", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun getTradesByExchangeAndDirection(@PathVariable exchange: Exchange, @PathVariable direction: Direction): ResponseEntity<List<Trade>> =

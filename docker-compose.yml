@@ -22,3 +22,10 @@ services:
       - tcp-data-streaming
     restart: always
     network_mode: "host"
+  cassandra-microservice:
+    image: nicolanardino/cassandra-microservice:2.0
+    container_name: cassandra-microservice
+    depends_on:
+      - cassandra-db
+    restart: always
+    network_mode: "host"
