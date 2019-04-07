@@ -32,6 +32,7 @@ Furthermore, there's a multi-module Maven project:
         <module>Utility</module>
         <module>TCPDataStreaming</module>
         <module>SparkStreaming</module>
+        <module>CassandraMicroservice</module>
     </modules>
 ```
 
@@ -51,6 +52,7 @@ Running mvn package in the parent pom, it creates Docker images for both the TCP
     docker run --name cassandra-db -v ~/data/docker/cassandra:/var/lib/cassandra --network=host cassandra:latest
     docker run --name tcp-data-streaming --network=host nicolanardino/tcp-data-streaming:2.0
     docker run --name spark-streaming --network=host nicolanardino/spark-streaming:2.0
+    docker run --name cassandra-microservice --network=host nicolanardino/cassandra-microservice:2.0
 ```
 Or with Docker Compose:
 
@@ -79,7 +81,15 @@ services:
       - tcp-data-streaming
     restart: always
     network_mode: "host"
+  cassandra-microservice:
+    image: nicolanardino/cassandra-microservice:2.0
+    container_name: cassandra-microservice
+    depends_on:
+      - cassandra-db
+    restart: always
+    network_mode: "host"
 ```
+
 ```unix
 docker-compose up -d
 ```
@@ -90,8 +100,19 @@ Objects set up at application start-up:
 ```sql
 create KEYSPACE spark_data with replication={'class':'SimpleStrategy', 'replication_factor':1};
 use spark_data;
-create table Trade(symbol text, direction text, quantity int, price double, exchange text, timestamp timestamp, primary key (timestamp));
+create table if not exists spark_data.trade(symbol text, direction text, quantity int, price double, exchange text, timestamp timeuuid, primary key (exchange, direction, symbol, timestamp));
 
+```
+The above column family definition is to be able to query on exchange, direction and symbol, ordered by timestamp (UUID). 
+
+#### Cassandra (Spring Boot) Microservice
+Mirroring the spark_data.trade compound key (partition and cluster components), it allows the following:
+
+```unix
+curl localhost:9100/cassandra/getAllTrades
+curl localhost:9100/cassandra/getTradesByExchange/FTSE
+curl localhost:9100/cassandra/getTradesByExchangeAndDirection/FTSE/Sell
+curl localhost:9100/cassandra/getTradesByExchangeAndDirectionAndSymbol/FTSE/Buy/UBS
 ```
 
 ## Development environment and tools
