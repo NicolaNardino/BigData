@@ -24,7 +24,7 @@ import java.util.concurrent.ThreadLocalRandom.current
 object StreamingLineSupplier {
     private val logger = LoggerFactory.getLogger(StreamingLineSupplier::class.java)
     private val mapper = ObjectMapper()
-    private val cassandraStore = CassandraDataStore(CassandraManager("127.0.0.1", 9042))
+    private val cassandraStore = CassandraDataStore(CassandraManager())
 
     /**
      * It generates a phrase made up by randomly generated words.

@@ -7,7 +7,7 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext
 
 abstract class AbstractStreaming(val sap: StreamingAppParameters) {
 
-    internal val streamingContext: JavaStreamingContext = JavaStreamingContext(SparkConf().setMaster("local[" + sap.nrThreads + "]").setAppName("StreamingWordCount"), Durations.seconds(sap.batchDuration.toLong()))
+    internal val streamingContext: JavaStreamingContext = JavaStreamingContext(SparkConf().setMaster("local[" + sap.nrThreads + "]").setAppName("StreamingApp"), Durations.seconds(sap.batchDuration.toLong()))
 
     init {
         streamingContext.checkpoint(sap.checkpointDir)

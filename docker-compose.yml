@@ -16,7 +16,7 @@ services:
     restart: always
     network_mode: "host"
   spark-streaming:
-    image: nicolanardino/spark-streaming:1.0
+    image: nicolanardino/spark-streaming:2.0
     container_name: spark-streaming
     depends_on:
       - tcp-data-streaming

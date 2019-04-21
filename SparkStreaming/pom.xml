@@ -9,6 +9,7 @@
   <properties>
 	  	<main.class>com.projects.bigdata.spark_streaming.StreamingRunner</main.class>
 	  	<docker.image.name>spark-streaming</docker.image.name>
+	  	<dse.version>6.7.2</dse.version>
   </properties>
   <dependencies>
   		<dependency>
@@ -20,6 +21,10 @@
 			<artifactId>spark-streaming_${scala.binary.version}</artifactId>
 		</dependency>
 	  <dependency>
+		  <groupId>org.apache.spark</groupId>
+		  <artifactId>spark-sql_${scala.binary.version}</artifactId>
+	  </dependency>
+	  <dependency>
 		  <groupId>com.fasterxml.jackson.core</groupId>
 		  <artifactId>jackson-databind</artifactId>
 	  </dependency>
@@ -27,7 +32,6 @@
 		<dependency>
 			<groupId>org.eclipse.jetty.orbit</groupId>
       		<artifactId>javax.servlet</artifactId>
-      		<version>3.0.0.v201112011016</version>
     	</dependency>
 		<dependency>
 			<groupId>com.projects.bigdata</groupId>
@@ -43,7 +47,7 @@
 		  	<artifactId>kotlin-test</artifactId>
 		  	<scope>test</scope>
 		</dependency>
-  	</dependencies>
+  </dependencies>
 	<build>
 		<plugins>
 			<plugin>
@@ -60,4 +64,10 @@
 			</plugin>
 		</plugins>
 	</build>
+	<!--<repositories>
+		<repository>
+			<id>DataStax-Repo</id>
+			<url>https://repo.datastax.com/public-repos/</url>
+		</repository>
+	</repositories>-->
 </project>

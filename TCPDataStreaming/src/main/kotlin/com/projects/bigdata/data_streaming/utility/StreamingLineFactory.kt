@@ -9,7 +9,6 @@ object StreamingLineFactory {
     private val streamingLineMap = mapOf<StreamingLineType, () -> String>(StreamingLineType.PHRASE to StreamingLineSupplier::randomPhrase,
             StreamingLineType.TRADE to StreamingLineSupplier::randomTrade)
 
-    fun getStreamingLine(streamingLineType: StreamingLineType): () -> String {
-        return streamingLineMap[streamingLineType]!!
-    }
+    fun getStreamingLine(streamingLineType: StreamingLineType): () -> String =
+            streamingLineMap.getValue(streamingLineType)
 }
