@@ -115,6 +115,23 @@ curl localhost:9100/cassandra/getTradesByExchangeAndDirection/FTSE/Sell
 curl localhost:9100/cassandra/getTradesByExchangeAndDirectionAndSymbol/FTSE/Buy/UBS
 ```
 
+#### Cassandra Connections
+
+Throughout the project, Cassadra connections are established in 3 ways:
+
+- Direct connection:
+ ```unix 
+    Cluster.builder().addContactPoint(node).withPort(port).build()
+ ```
+- Spring Boot Data Cassandra: CassandraMicroservice.
+- Spark Cassandra Connector: 
+ ```unix 
+    val sparkSession = SparkSession.builder().master("local[*]").appName("CassandraSparkConnector")
+                    .config("spark.cassandra.connection.host", getProperty("cassandra.node"))
+                    .config("spark.cassandra.connection.port", getProperty("cassandra.port")).getOrCreate()
+ ```
+
+
 ## Development environment and tools
 - Ubuntu.
 - Intellij.
