@@ -17,7 +17,7 @@ import java.util.stream.Collectors
  * It aggregates two streams of JSON represented `Trade2`s and then applies stateful aggregations using mapWithState.
  *
  */
-class TradesAnalytics(sap: StreamingAppParameters) : AbstractStreaming(sap) {
+class StreamingTradesAnalytics(sap: StreamingAppParameters) : AbstractStreaming(sap) {
 
     override fun process() {
         val unionStream = streamingContext.socketTextStream(sap.dataStreamHost1, sap.dataStreamPort1).map{ convertJsonToTrade(it) }
@@ -30,7 +30,7 @@ class TradesAnalytics(sap: StreamingAppParameters) : AbstractStreaming(sap) {
     }
 
     companion object : Serializable {
-        private val logger = LoggerFactory.getLogger(TradesAnalytics::class.java)
+        private val logger = LoggerFactory.getLogger(StreamingTradesAnalytics::class.java)
         private val mapper = ObjectMapper()
 
         private fun tradesAggregation(symbol: String, currentTrade: Optional<Trade>, state: State<ArrayList<Trade>>): Tuple2<String, Double> {

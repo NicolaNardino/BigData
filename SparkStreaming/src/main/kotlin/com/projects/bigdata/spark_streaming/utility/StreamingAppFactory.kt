@@ -7,7 +7,7 @@ object StreamingAppFactory {
 
     fun getStreamingApp(slt: StreamingLineType, sap: StreamingAppParameters): AbstractStreaming = when (slt) {
             StreamingLineType.PHRASE -> StreamingWordsCount(sap)
-            StreamingLineType.TRADE -> TradesAnalytics(sap)
+            StreamingLineType.TRADE -> StreamingTradesAnalytics(sap)
             else -> throw IllegalArgumentException("Unknown application type: $slt")
     }
 }

@@ -10,7 +10,7 @@ import com.projects.bigdata.utility.getApplicationProperties
 
 fun main(args: Array<String>) {
     fun getStreamingApp(args: Array<String>, sap: StreamingAppParameters): AbstractStreaming = if (args.isEmpty())
-        TradesAnalytics(sap)
+        StreamingTradesAnalytics(sap)
     else
         StreamingAppFactory.getStreamingApp(StreamingLineType.valueOf(args[0]), sap)
 
