@@ -30,6 +30,7 @@
         <cassandra.core.version>3.7.1</cassandra.core.version>
         <spring.boot.version>2.1.4.RELEASE</spring.boot.version>
         <io.dropwizard.metrics.version>3.2.2</io.dropwizard.metrics.version>
+        <swagger.version>2.9.2</swagger.version>
         <jetty.orbit.workarourd.version>3.0.0.v201112011016</jetty.orbit.workarourd.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.jar.with.dependencies>${project.name}-${project.version}-jar-with-dependencies.jar</project.jar.with.dependencies>
@@ -113,6 +114,16 @@
                 <groupId>org.eclipse.jetty.orbit</groupId>
                 <artifactId>javax.servlet</artifactId>
                 <version>${jetty.orbit.workarourd.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
