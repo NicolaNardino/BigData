@@ -114,6 +114,7 @@ curl localhost:9100/cassandra/getTradesByExchange/FTSE
 curl localhost:9100/cassandra/getTradesByExchangeAndDirection/FTSE/Sell
 curl localhost:9100/cassandra/getTradesByExchangeAndDirectionAndSymbol/FTSE/Buy/UBS
 ```
+Swagger support at http://localhost:9100/swagger-ui.html.
 
 #### Cassandra Connections
 
