@@ -9,29 +9,27 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("/cassandra")
-class CassandraRestController {
+class CassandraRestController : ICassandraRestController {
 
     @Autowired
     lateinit var cassandraTradeRepository: CassandraTradeRepository
 
     @ApiOperation(value = "Get all trades.")
     @GetMapping("/getAllTrades", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getAllTrades(): ResponseEntity<List<Trade>> = ResponseEntity.ok(cassandraTradeRepository.findAll())
+    override fun getAllTrades(): ResponseEntity<List<Trade>> = ResponseEntity.ok(cassandraTradeRepository.findAll())
 
     @ApiOperation(value = "Get all trades by exchange.")
     @GetMapping("/getTradesByExchange/{exchange}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getTradesByExchange(@ApiParam(value = "Exchange.", required = true)
+    override fun getTradesByExchange(@ApiParam(value = "Exchange.", required = true)
                             @PathVariable exchange: Exchange): ResponseEntity<List<Trade>> = ResponseEntity.ok(cassandraTradeRepository.findByExchange(exchange))
 
     @ApiOperation(value = "Get all trades by exchange and direction (buy/ sell).")
     @GetMapping("/getTradesByExchangeAndDirection/{exchange}/{direction}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getTradesByExchangeAndDirection(
+    override fun getTradesByExchangeAndDirection(
             @ApiParam(value = "Exchange.", required = true)
             @PathVariable exchange: Exchange,
             @ApiParam(value = "Direction.", required = true)
@@ -40,7 +38,7 @@ class CassandraRestController {
 
     @ApiOperation(value = "Get all trades by exchange, direction and symbol.")
     @GetMapping("/getTradesByExchangeAndDirectionAndSymbol/{exchange}/{direction}/{symbol}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    fun getTradesByExchangeAndDirection(
+    override fun getTradesByExchangeAndDirection(
             @ApiParam(value = "Exchange.", required = true)
             @PathVariable exchange: Exchange,
             @ApiParam(value = "Direction.", required = true)
@@ -48,4 +46,13 @@ class CassandraRestController {
             @ApiParam(value = "Symbol.", required = true)
             @PathVariable symbol: String): ResponseEntity<List<Trade>> =
             ResponseEntity.ok(cassandraTradeRepository.findByExchangeAndDirectionAndSymbol(exchange, direction, symbol))
+
+    @ApiOperation(value = "Add a Trade to the Cassandra Repository.")
+    @PostMapping("/addTrade", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    override fun insertTrade(
+            @ApiParam(value = "New Trade.", required = true)
+            @RequestBody trade: Trade) : ResponseEntity<String> {
+        cassandraTradeRepository.insert(trade)
+        return ResponseEntity.ok("Added $trade")
+    }
 }
