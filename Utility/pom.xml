@@ -36,6 +36,18 @@
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-starter-data-cassandra</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-core</artifactId>
+        </dependency>
+        <dependency>
+          <groupId>org.apache.ignite</groupId>
+          <artifactId>ignite-indexing</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.ignite</groupId>
+            <artifactId>ignite-cassandra-store</artifactId>
+        </dependency>
   </dependencies>
     <build>
         <plugins>

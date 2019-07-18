@@ -7,7 +7,7 @@ import java.util.*
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.TimeUnit
 
-val Symbols: List<String> = Arrays.asList("UBSN", "CSGN", "AAPL", "GOOG", "MSFT", "ACN", "AGN")
+val Symbols: List<String> = listOf("UBSN", "CSGN", "AAPL", "GOOG", "MSFT", "ACN", "AGN")
 
 private val logger = LoggerFactory.getLogger("com.projects.bigdata.utility.Utility")
 
