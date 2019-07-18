@@ -139,5 +139,6 @@ Throughout the project, Cassadra connections are established in 3 ways:
 - Spark 2.4.1. 
 - Kotlin 1.3.21. 
 - Cassandra.
+- Redis/ Redisson.
 - Docker/ Docker Compose.
 - Spring Boot. 
