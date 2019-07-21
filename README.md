@@ -1,4 +1,4 @@
-# Welcome to BigData.Spark
+# Welcome to BigData
 
 It's about various BigData problems solved with Spark and NoSQL technologies. 
 The server components are packaged in Docker images, published to my DockerHub [account](https://hub.docker.com/u/nicolanardino).
@@ -33,6 +33,7 @@ Furthermore, there's a multi-module Maven project:
         <module>TCPDataStreaming</module>
         <module>SparkStreaming</module>
         <module>CassandraMicroservice</module>
+        <module>DistributedCache</module>
     </modules>
 ```
 
@@ -49,6 +50,7 @@ Which builds both executable projects along with their Utility dependency:
 Running mvn package in the parent pom, it creates Docker images for both the TCP Data Streaming Servers and the Spark Streaming Server, which can then be run by:
 
 ```unix
+    docker run --name redis-cache --network=host -v ~/data/docker/redis:/data -d redis redis-server --appendonly yes
     docker run --name cassandra-db -v ~/data/docker/cassandra:/var/lib/cassandra --network=host cassandra:latest
     docker run --name tcp-data-streaming --network=host nicolanardino/tcp-data-streaming:2.0
     docker run --name spark-streaming --network=host nicolanardino/spark-streaming:2.0
@@ -60,6 +62,13 @@ Or with Docker Compose:
 version: '3.4'
 
 services:
+  redis-cache:
+    image: redis:latest
+    container_name: redis-cache
+    restart: always
+    network_mode: "host"
+    volumes:
+      - ~/data/docker/redis:/data
   cassandra-db:
     image: cassandra:latest
     container_name: cassandra-db
@@ -75,7 +84,7 @@ services:
     restart: always
     network_mode: "host"
   spark-streaming:
-    image: nicolanardino/spark-streaming:1.0
+    image: nicolanardino/spark-streaming:2.0
     container_name: spark-streaming
     depends_on:
       - tcp-data-streaming
@@ -86,6 +95,13 @@ services:
     container_name: cassandra-microservice
     depends_on:
       - cassandra-db
+    restart: always
+    network_mode: "host"
+  distributed-cache:
+    image: nicolanardino/distributed-cache:2.0
+    container_name: distributed-cache
+    depends_on:
+      - redis-cache
     restart: always
     network_mode: "host"
 ```
@@ -136,8 +152,8 @@ Throughout the project, Cassadra connections are established in 3 ways:
 ## Development environment and tools
 - Ubuntu.
 - Intellij.
-- Spark 2.4.1. 
-- Kotlin 1.3.21. 
+- Spark. 
+- Kotlin. 
 - Cassandra.
 - Redis/ Redisson.
 - Docker/ Docker Compose.
