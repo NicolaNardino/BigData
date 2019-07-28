@@ -3,4 +3,5 @@
 SparkStreaming/target
 TCPDataStreaming/target
 Utility/target
+DistributedCache/target
 Log/

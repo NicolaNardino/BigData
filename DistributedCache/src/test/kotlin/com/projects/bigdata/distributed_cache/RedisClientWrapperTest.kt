@@ -3,17 +3,13 @@ package com.projects.bigdata.distributed_cache
 import org.junit.jupiter.api.Test
 import org.redisson.api.RMap
 import java.time.LocalDate
-import java.util.stream.Collectors
 import java.util.stream.StreamSupport
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import java.util.*
 
 
 class RedisClientWrapperTest {
     private val redisConnectionParams = Pair("localhost", 6379)
-    private val timeSeriesNames = setOf("N1", "N2", "N3", "N4")
-    private val timeSeriesParams = setOf("P1", "P2", "P3", "P4", "P5", "P6", "P7")
 
     @Test
     fun redisMapTest() {
@@ -33,14 +29,7 @@ class RedisClientWrapperTest {
     @Test
     fun redisBatchBucketsTest() {
         RedisClientWrapper(redisConnectionParams.first, redisConnectionParams.second).use{
-            with(it.redisson) {
-                val timeSeriesNamesArray: Array<String?> = arrayOfNulls(timeSeriesNames.size)
-                (timeSeriesNames.toList() as ArrayList<String>).toArray(timeSeriesNamesArray)
-                val inputMap: MutableMap<String, List<TimeSeriesItem>> = timeSeriesNames.stream().collect(Collectors.toMap({ k -> k }) { buildTimeSeries(timeSeriesParams, LocalDate.of(2015, 1, 1), LocalDate.now()) })
-                buckets.set(inputMap)
-                val resultFromRedisMap : Map<String, List<TimeSeriesItem>> = buckets.get(*timeSeriesNamesArray)
-                assertEquals(resultFromRedisMap.keys, inputMap.keys)
-            }
+            batchBucketsSupport(it.redisson, timeSeriesNames, timeSeriesParams)
         }
     }
 
