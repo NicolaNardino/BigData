@@ -4,4 +4,6 @@ SparkStreaming/target
 TCPDataStreaming/target
 Utility/target
 DistributedCache/target
+CassandraMicroservice/target
+SparkCassandra/target
 Log/

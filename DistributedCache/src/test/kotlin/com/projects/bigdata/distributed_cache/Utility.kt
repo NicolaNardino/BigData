@@ -19,3 +19,4 @@ fun batchBucketsSupport(redissonClient: RedissonClient, timeSeriesNames: Set<Str
     val resultFromRedisMap : Map<String, List<TimeSeriesItem>> = redissonClient.buckets.get(*timeSeriesNamesArray)
     assertEquals(resultFromRedisMap.keys, inputMap.keys)
 }
+

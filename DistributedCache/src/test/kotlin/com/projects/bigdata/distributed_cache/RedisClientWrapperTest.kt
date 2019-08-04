@@ -35,11 +35,17 @@ class RedisClientWrapperTest {
 
     @Test
     fun redisBucketAsyncTest() {
+        val keyName = "timeSeriesItem"
         RedisClientWrapper(redisConnectionParams.first, redisConnectionParams.second).use{
             with(it.redisson) {
-                val timeSeriesBucket = getBucket<TimeSeriesItem>("timeSeriesItem")
+                keys.delete(keyName)
+                val timeSeriesBucket = getBucket<TimeSeriesItem>(keyName)
                 val timeSeriesItem = TimeSeriesItem(mapOf("A" to 10.1), LocalDate.of(2015, 10, 12), Double.MIN_VALUE)
-                timeSeriesBucket.setAsync(timeSeriesItem).whenComplete{ _, _ -> assertEquals(timeSeriesItem, timeSeriesBucket.get()) }
+                timeSeriesBucket.setAsync(timeSeriesItem).whenComplete { _, _ ->
+                        val timeSeriesValue = timeSeriesBucket.get()
+                        println("Got $keyName value: $timeSeriesValue")
+                        assertEquals(timeSeriesItem, timeSeriesBucket.get());
+                }
             }
         }
     }

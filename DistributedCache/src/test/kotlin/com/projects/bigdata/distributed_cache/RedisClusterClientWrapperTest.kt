@@ -1,7 +1,9 @@
 package com.projects.bigdata.distributed_cache
 
 import org.junit.jupiter.api.Test
+import org.redisson.api.RedissonClient
 import java.time.LocalDate
+import java.util.ArrayList
 import kotlin.test.assertEquals
 
 /**
@@ -36,7 +38,12 @@ class RedisClusterClientWrapperTest {
                     timeSeriesBucket.set(timeSeriesItem)
                     assertEquals(timeSeriesBucket.get(), timeSeriesItem)
                 }
+                printKeySlots(it.redisson, timeSeriesNames)
             }
         }
+    }
+
+    fun printKeySlots(redisson: RedissonClient, keys: Set<String>) {
+        keys.forEach { println("$it -> ${redisson.keys.getSlot(it)}") }
     }
 }
