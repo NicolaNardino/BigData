@@ -148,6 +148,49 @@ Throughout the project, Cassadra connections are established in 3 ways:
                     .config("spark.cassandra.connection.port", getProperty("cassandra.port")).getOrCreate()
  ```
 
+## Redis Cluster
+I've set up a Redis Cluster on localhost with 3 Masters and 3 Slaves. 
+Steps required:
+- Build redis from source, say in $REDIS_HOME.
+- Create a folder to hold the cluster configuration, say in $REDIS_CLUSTER_HOME.
+- Create within $REDIS_CLUSTER_HOME, 6 folders to hold the nodes configurations. The Redis Cluster set-up guide suggests to have them called after the cluster node port, say 7000-7005.
+- Within each node folder, create a redis.conf holding a minimum cluster configiration, like this:
+
+```unix 
+    port 7000
+    cluster-enabled yes
+    cluster-config-file nodes.conf
+    cluster-node-timeout 5000
+    appendonly yes
+ ```
+- Change the port number in each redis.conf to align with the node's port.
+- Start all 6 instances, with a script like this:
+
+```unix 
+    #!/bin/bash
+    cd $REDIS_CLUSTER_HOME/7000
+    $REDIS_HOME/src/redis-server ./redis.conf&
+    sleep 3
+    cd ../7001
+    $REDIS_HOME/src/redis-server ./redis.conf&
+    sleep 3
+    cd ../7002
+    $REDIS_HOME/src/redis-server ./redis.conf&
+    sleep 3
+    cd ../7003
+    $REDIS_HOME/src/redis-server ./redis.conf&
+    sleep 3
+    cd ../7004
+    $REDIS_HOME/src/redis-server ./redis.conf&
+    sleep 3
+    cd ../7005
+    $REDIS_HOME/src/redis-server ./redis.conf&
+ ```
+- Create the Redis Cluster, one-off task: 
+```unix 
+ #!/bin/bash
+ $REDIS_HOME/src/redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas 1
+```
 
 ## Development environment and tools
 - Ubuntu.
