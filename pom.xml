@@ -15,6 +15,7 @@
         <module>CassandraMicroservice</module>
         <module>SparkCassandra</module>
         <module>DistributedCache</module>
+        <module>DeltaLake</module>
     </modules>
 
     <properties>
@@ -28,7 +29,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <jackson.databind.version>2.9.8</jackson.databind.version>
-        <spark.version>2.4.1</spark.version>
+        <spark.version>2.4.2</spark.version>
         <scala.binary.version>2.12</scala.binary.version>
         <cassandra.core.version>3.7.1</cassandra.core.version>
         <spring.boot.version>2.1.4.RELEASE</spring.boot.version>
@@ -36,6 +37,8 @@
         <swagger.version>2.9.2</swagger.version>
         <jetty.orbit.workarourd.version>3.0.0.v201112011016</jetty.orbit.workarourd.version>
         <redisson.version>3.11.1</redisson.version>
+        <spark.redis.connector.version>2.4.0</spark.redis.connector.version>
+        <delta.core.version>0.3.0</delta.core.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.jar.with.dependencies>${project.name}-${project.version}-jar-with-dependencies.jar</project.jar.with.dependencies>
         <!--plugin versions-->
@@ -153,6 +156,16 @@
                 <groupId>org.junit.platform</groupId>
                 <artifactId>junit-platform-commons</artifactId>
                 <version>${junit.platform.engine.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redislabs</groupId>
+                <artifactId>spark-redis</artifactId>
+                <version>${spark.redis.connector.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.delta</groupId>
+                <artifactId>delta-core_${scala.binary.version}</artifactId>
+                <version>${delta.core.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
