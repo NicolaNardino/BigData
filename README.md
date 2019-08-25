@@ -164,33 +164,34 @@ Steps required:
     appendonly yes
  ```
 - Change the port number in each redis.conf to align with the node's port.
-- Start all 6 instances, with a script like this:
+- Start all 6 Redis instances, with a script like the following (assuming $REDIS_HOME/src is in $PATH):
 
 ```unix 
     #!/bin/bash
-    cd $REDIS_CLUSTER_HOME/7000
-    $REDIS_HOME/src/redis-server ./redis.conf&
+    cd 7000
+    redis-server ./redis.conf&
     sleep 3
     cd ../7001
-    $REDIS_HOME/src/redis-server ./redis.conf&
+    redis-server ./redis.conf&
     sleep 3
     cd ../7002
-    $REDIS_HOME/src/redis-server ./redis.conf&
+    redis-server ./redis.conf&
     sleep 3
     cd ../7003
-    $REDIS_HOME/src/redis-server ./redis.conf&
+    redis-server ./redis.conf&
     sleep 3
     cd ../7004
-    $REDIS_HOME/src/redis-server ./redis.conf&
+    redis-server ./redis.conf&
     sleep 3
     cd ../7005
-    $REDIS_HOME/src/redis-server ./redis.conf&
+    redis-server ./redis.conf&
  ```
 - Create the Redis Cluster, one-off task: 
 ```unix 
  #!/bin/bash
- $REDIS_HOME/src/redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas 1
+ redis-cli --cluster create 127.0.0.1:7000 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005 --cluster-replicas 1
 ```
+This way, we create a 1 replica for each master.
 
 ## Development environment and tools
 - Ubuntu.
