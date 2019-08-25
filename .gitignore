@@ -6,4 +6,5 @@ Utility/target
 DistributedCache/target
 CassandraMicroservice/target
 SparkCassandra/target
+DeltaLake/target
 Log/
