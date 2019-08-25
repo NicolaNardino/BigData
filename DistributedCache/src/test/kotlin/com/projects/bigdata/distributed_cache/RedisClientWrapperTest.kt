@@ -16,7 +16,7 @@ class RedisClientWrapperTest {
         val timeSeriesMapName = "TimeSeriesMap"
         RedisClientWrapper(redisConnectionParams.first, redisConnectionParams.second).use{
             with(it.redisson) {
-                val timeSeriesMap: RMap<String, List<TimeSeriesItem>> = getMap(timeSeriesMapName)
+                val timeSeriesMap: RMap<String, Set<TimeSeriesItem>> = getMap(timeSeriesMapName)
                 timeSeriesMap.delete()
                 timeSeriesNames.forEach{ p -> timeSeriesMap[p] = buildTimeSeries(timeSeriesParams, LocalDate.of(2009,1,1), LocalDate.now()) }
                 assertEquals(timeSeriesMap.keys, timeSeriesNames)
@@ -45,6 +45,22 @@ class RedisClientWrapperTest {
                         val timeSeriesValue = timeSeriesBucket.get()
                         println("Got $keyName value: $timeSeriesValue")
                         assertEquals(timeSeriesItem, timeSeriesBucket.get());
+                }
+            }
+        }
+    }
+
+    @Test
+    fun redisSetAsyncTest() {
+        val keyName = "timeSeriesSet"
+        RedisClientWrapper(redisConnectionParams.first, redisConnectionParams.second).use{
+            with(it.redisson) {
+                val timeSeriesBucket = getBucket<TimeSeriesItem>(keyName)
+                val timeSeriesItem = TimeSeriesItem(mapOf("A" to 10.1), LocalDate.of(2015, 10, 12), Double.MIN_VALUE)
+                timeSeriesBucket.setAsync(timeSeriesItem).whenComplete { _, _ ->
+                    val timeSeriesValue = timeSeriesBucket.get()
+                    println("Got $keyName value: $timeSeriesValue")
+                    assertEquals(timeSeriesItem, timeSeriesBucket.get());
                 }
             }
         }
