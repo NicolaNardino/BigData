@@ -28,7 +28,7 @@
         <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
-        <jackson.databind.version>2.9.8</jackson.databind.version>
+        <jackson.databind.version>2.9.10.1</jackson.databind.version>
         <spark.version>2.4.2</spark.version>
         <scala.binary.version>2.12</scala.binary.version>
         <cassandra.core.version>3.7.1</cassandra.core.version>
